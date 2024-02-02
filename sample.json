@@ -1,0 +1,117 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Telecom Product Catalog Query API",
+    "version": "1.0.0"
+  },
+  "basePath": "/tmf-api/productCatalogManagement/v4",
+  "schemes": ["https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/productCatalog": {
+      "get": {
+        "summary": "Retrieve Product Catalog",
+        "description": "Retrieve the entire product catalog or filter by specific criteria.",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated list of fields to include in the response",
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter criteria for the product catalog",
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort criteria for the product catalog",
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of records to skip for pagination",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of records to return",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/ProductCatalogList"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Product catalog not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ProductCatalogList": {
+      "type": "object",
+      "properties": {
+        "productCatalogs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProductCatalog"
+          }
+        }
+      }
+    },
+    "ProductCatalog": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        }
+      },
+      "required": ["id", "name"]
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        // Define properties for the Product entity as needed
+      }
+    }
+  }
+}

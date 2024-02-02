@@ -1,0 +1,301 @@
+[
+  {
+    "id": "734",
+    "name": "Connectivity Bundle",
+    "href": "http://10.0.14.8:8191/UPC/ProductOffering/734",
+    "sellable": true,
+    "dynamicBundle": false,
+    "description": "",
+    "invoiceDescription": "Connectivity Bundle",
+    "marketingDescription": "Connectivity Bundle",
+    "poId": "734",
+    "poImage": "E://LOGO/undefined",
+    "allowedContextFilteration": "false",
+    "versionNo": "1",
+    "versionStatus": "ACTIVE",
+    "createdBy": "superadmin@gmail.com",
+    "sortingPreference": "0",
+    "displayOnly": "false",
+    "isLocked": "false",
+    "poStatus": {
+      "id": "0",
+      "name": "Active"
+    },
+    "validFor": {
+      "startDateTime": "05/17/2023"
+    },
+    "productOfferGroup": {
+      "id": "100",
+      "name": "Connectivity Bundle",
+      "isBundleOffer": "true",
+      "status": {
+        "id": "0",
+        "name": "Active"
+      },
+      "productFamily": {
+        "id": "22",
+        "name": "MPLS",
+        "href": "http://10.0.14.8:8191/UPC/ProductFamily/22",
+        "versionNo": "1",
+        "versionStatus": "ACTIVE",
+        "validFor": {
+          "startDateTime": "05/08/2023"
+        },
+        "createdBy": "superadmin@gmail.com",
+        "isLocked": "false"
+      },
+      "versionNo": "1",
+      "versionStatus": "ACTIVE",
+      "validFor": {
+        "startDateTime": "05/17/2023"
+      },
+      "createdBy": "superadmin@gmail.com",
+      "isLocked": "false"
+    },
+    "productOfferingPrice": [
+      {
+        "id": "171",
+        "name": "25 birr weekly",
+        "price": "25.000000",
+        "factor": "1",
+        "isApplicable": "false",
+        "isStackable": "false",
+        "dynamicPrice": false,
+        "applyToExistingCustomer": false,
+        "priceOverride": false,
+        "split": "false",
+        "tieredDiscount": false,
+        "priceMode": {
+          "id": "1",
+          "name": "Non-Recurring"
+        },
+        "priceCategory": {
+          "id": "0",
+          "name": "Base Price",
+          "href": "http://10.0.14.8:8191/UPC/PriceCategory/0",
+          "billingChargeType": {
+            "id": "1",
+            "name": "Rental"
+          },
+          "mandatory": false,
+          "taxable": false,
+          "billingType": {
+            "id": "1",
+            "name": "Service Level"
+          },
+          "validFor": {
+            "startDateTime": "11/09/2021"
+          },
+          "billSection": "",
+          "isRecoverableUpfrontCost": "true",
+          "contractualObligation": "false",
+          "isNonAccountingItem": "false",
+          "trigger": {},
+          "billingChargeCategory": {
+            "id": "3",
+            "name": "Both"
+          }
+        },
+        "priceType": {
+          "id": "0",
+          "name": "Fixed"
+        },
+        "priceCode": {
+          "id": "1",
+          "name": "Safaricom",
+          "code": "100",
+          "description": "Safaricom",
+          "synonym": {
+            "id": "1",
+            "name": "ACT"
+          },
+          "status": {
+            "id": "0",
+            "name": "Active"
+          },
+          "taxable": "0",
+          "reversal": "0",
+          "normalizetax": "0",
+          "validFor": {
+            "startDateTime": "09/16/2021"
+          },
+          "versionStatus": "ACTIVE",
+          "isLocked": "false",
+          "createdBy": "SMAdmin",
+          "versionNo": "1"
+        },
+        "popType": {
+          "id": "0",
+          "name": "Normal"
+        },
+        "prorataEnable": false,
+        "prorataEnabledInSuspension": false,
+        "prorataEnabledInTermination": false,
+        "prorataEnabledInPlanChange": false,
+        "prorataEnabledInActivation": false,
+        "tierbased": false,
+        "frequency": {
+          "id": "1",
+          "name": "Weekly"
+        },
+        "splitCategory": {},
+        "isApplicableForAlasCarte": "false",
+        "minMRC": "",
+        "maxMRC": "",
+        "discountEvolution": {},
+        "manualWaiver": "false",
+        "versionNo": "1",
+        "versionStatus": "ACTIVE",
+        "validFor": {
+          "startDateTime": "04/20/2022"
+        },
+        "createdBy": "0",
+        "currentDate": false,
+        "isLocked": "false",
+        "isAutomatic": "false",
+        "discountCompatibility": {
+          "id": "171"
+        },
+        "coreServiceCombination": {
+          "id": "171"
+        },
+        "defineSpecificInclusionExclusion": [
+          {
+            "id": "171",
+            "inclusion": false,
+            "exclusion": false
+          }
+        ],
+        "applyFallBack": "false",
+        "fixedPayment": "false",
+        "activationParking": "false",
+        "billed": false
+      },
+      {
+        "id": "767",
+        "name": "Discount Bundle",
+        "price": "50.000000",
+        "isApplicable": "false",
+        "isStackable": "false",
+        "dynamicPrice": false,
+        "applyToExistingCustomer": false,
+        "priceOverride": false,
+        "split": "false",
+        "tieredDiscount": false,
+        "priceMode": {
+          "id": "1",
+          "name": "Non-Recurring"
+        },
+        "priceCategory": {
+          "id": "4",
+          "name": "Discount",
+          "href": "http://10.0.14.8:8191/UPC/PriceCategory/4",
+          "billingChargeType": {
+            "id": "5",
+            "name": "Discounts"
+          },
+          "mandatory": false,
+          "taxable": false,
+          "billingType": {
+            "id": "1",
+            "name": "Service Level"
+          },
+          "validFor": {
+            "startDateTime": "09/16/2021"
+          },
+          "billSection": "",
+          "isRecoverableUpfrontCost": "false",
+          "contractualObligation": "false",
+          "isNonAccountingItem": "false",
+          "trigger": {}
+        },
+        "priceType": {
+          "id": "0",
+          "name": "Fixed"
+        },
+        "priceCode": {
+          "id": "1",
+          "name": "Safaricom",
+          "code": "100",
+          "description": "Safaricom",
+          "synonym": {
+            "id": "1",
+            "name": "ACT"
+          },
+          "status": {
+            "id": "0",
+            "name": "Active"
+          },
+          "taxable": "0",
+          "reversal": "0",
+          "normalizetax": "0",
+          "validFor": {
+            "startDateTime": "09/16/2021"
+          },
+          "versionStatus": "ACTIVE",
+          "isLocked": "false",
+          "createdBy": "SMAdmin",
+          "versionNo": "1"
+        },
+        "popType": {
+          "id": "0",
+          "name": "Normal"
+        },
+        "prorataEnable": false,
+        "prorataEnabledInSuspension": false,
+        "prorataEnabledInTermination": false,
+        "prorataEnabledInPlanChange": false,
+        "prorataEnabledInActivation": false,
+        "tierbased": false,
+        "splitCategory": {},
+        "isApplicableForAlasCarte": "false",
+        "minMRC": "",
+        "maxMRC": "",
+        "discountEvolution": {},
+        "manualWaiver": "false",
+        "versionNo": "1",
+        "versionStatus": "ACTIVE",
+        "validFor": {
+          "startDateTime": "05/17/2023"
+        },
+        "createdBy": "superadmin@gmail.com",
+        "currentDate": false,
+        "isLocked": "false",
+        "isAutomatic": "false",
+        "discountCompatibility": {
+          "id": "767"
+        },
+        "coreServiceCombination": {
+          "id": "767"
+        },
+        "defineSpecificInclusionExclusion": [
+          {
+            "id": "767",
+            "inclusion": false,
+            "exclusion": false
+          }
+        ],
+        "applyFallBack": "false",
+        "fixedPayment": "true",
+        "maxRequest": "12",
+        "activationParking": "false",
+        "billed": false
+      }
+    ],
+    "productSpecifications": [],
+    "contracts": [],
+    "poBundles": [
+      {
+        "poId": "732"
+      },
+      {
+        "poId": "733"
+      }
+    ],
+    "poDynamicGroups": [],
+    "dynamicOfferAvailabilities": [],
+    "eligibilityOffers": [],
+    "bucketDetails": [],
+    "partner": "335"
+  }
+]

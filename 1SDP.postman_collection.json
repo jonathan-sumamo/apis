@@ -1,0 +1,216 @@
+{
+	"info": {
+		"_postman_id": "136bcb57-8970-4d2b-a432-afd17138bb24",
+		"name": "1SDP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3925128"
+	},
+	"item": [
+		{
+			"name": "Query Offers BP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTRkMgQXV0b21hdGlvbiIsImF1ZCI6IlBST0QiLCJpc3MiOiJTYWZhcmljb20iLCJleHAiOjE2OTYwMzI3NDAsImlhdCI6MTY5NjAwMjcxMCwidXNlcm5hbWUiOiJTTkQifQ.x2VbCG54xYrBS7K50yACIUEwT8IHHvTE2OdaNrVNnViLF0pStKbw5AgA2kwsu6iLu5ddkubq33STiGpH833QqQ",
+						"type": "default"
+					},
+					{
+						"key": "x-source-system",
+						"value": "USSD",
+						"type": "text"
+					},
+					{
+						"key": "x-route-id",
+						"value": "QueryOffers",
+						"type": "text"
+					},
+					{
+						"key": "x-correlation-id",
+						"value": "123",
+						"type": "text"
+					},
+					{
+						"key": "channel",
+						"value": "2",
+						"type": "text"
+					},
+					{
+						"key": "SDPInternalVisibility",
+						"value": "102",
+						"type": "text"
+					},
+					{
+						"key": "SDPSubCategory",
+						"value": "100",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"serviceId\": \"251700503187\",\r\n    \"useCase\": \"postPayBundles\",\r\n    \"serviceSpecification\": [\r\n        {\r\n            \"name\": \"productSpecificationTypeId\",\r\n            \"value\": \"2\"\r\n        },\r\n        {\r\n            \"name\": \"productFamilyId\",\r\n            \"value\": \"1002\"\r\n        },\r\n        {\r\n            \"name\": \"productOfferGroupId\",\r\n            \"value\": \"70\"\r\n        },\r\n        {\r\n            \"name\": \"productSubGroupId\",\r\n            \"value\": \"10\"\r\n        },\r\n           {\r\n            \"name\": \"languageId\",\r\n            \"value\": \"1\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://tibcobp.blueprint.lab/auth/v1/serviceCandidate/offers",
+					"protocol": "https",
+					"host": [
+						"tibcobp",
+						"blueprint",
+						"lab"
+					],
+					"path": [
+						"auth",
+						"v1",
+						"serviceCandidate",
+						"offers"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Query Offers",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJQUk9EIiwic3ViIjoiU0ZDIEF1dG9tYXRpb24iLCJpc3MiOiJTYWZhcmljb20iLCJleHAiOjE2NTQ3NjE5NDcsImlhdCI6MTY1NDc2MTA0NywidXNlcm5hbWUiOiJTTkQifQ.3A_9iXiwdWp5VegWKxpC760VF6RxjTFw3o_g3i1766-C4ZKU5E_KLSaD5qW3RZ-_U2AB0l5wxBU6PHT3JgGkNw",
+								"type": "default"
+							},
+							{
+								"key": "x-source-system",
+								"value": "AWIE",
+								"type": "text"
+							},
+							{
+								"key": "x-route-id",
+								"value": "customerbymsisdn",
+								"type": "text"
+							},
+							{
+								"key": "x-correlation-id",
+								"value": "123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"serviceId\":\"251700100044\",\r\n    \"serviceSpecification\":[\r\n       {\r\n          \"name\":\"productSpecificationTypeId\",\r\n          \"value\":\"1\"\r\n       },\r\n       {\r\n          \"name\":\"productFamilyId\",\r\n          \"value\":\"1\"\r\n       },\r\n       {\r\n          \"name\":\"productOfferGroupId\",\r\n          \"value\":\"1\"\r\n       },\r\n       {\r\n          \"name\":\"languageId\",\r\n          \"value\":\"1\"\r\n       },\r\n       {\r\n          \"name\":\"languageId\",\r\n          \"value\":\"1\"\r\n       }\r\n    ]\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://10.3.174.80:8120/auth/v1/serviceCandidate/offers",
+							"protocol": "https",
+							"host": [
+								"10",
+								"3",
+								"174",
+								"80"
+							],
+							"port": "8120",
+							"path": [
+								"auth",
+								"v1",
+								"serviceCandidate",
+								"offers"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 09 Jun 2022 07:51:04 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "HEAD,POST,GET,OPTIONS,DELETE,PUT,PATCH"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Content-Type, api_key, Authorization"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1327"
+						},
+						{
+							"key": "Server",
+							"value": "Jetty(9.4.46.v20220331)"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": \"1000\",\n    \"message\": \"Success\",\n    \"account\": {\n        \"id\": \"ET1000\",\n        \"parts\": [\n            {\n                \"valueType\": \"serviceId\",\n                \"value\": \"251700100044\"\n            },\n            {\n                \"valueType\": \"totalDeposit\",\n                \"value\": \"2000\"\n            },\n            {\n                \"valueType\": \"creditLimit\",\n                \"value\": \"1000\"\n            }\n        ]\n    },\n    \"offers\": [\n        {\n            \"id\": \"118\",\n            \"name\": \"Consumer Pre-Pay Base Plan\",\n            \"marketingDescription\": \"Pre-Pay Base Plan with voice, data and SMS for consumer\",\n            \"category\": [\n                {\n                    \"value\": \"GSM PO Group\",\n                    \"id\": \"1\"\n                }\n            ],\n            \"validFor\": {\n                \"startDateTime\": \"05/12/2022\",\n                \"endDateTime\": \"05/12/2024\"\n            },\n            \"status\": \"Active\",\n            \"price\": {\n                \"amount\": 2000,\n                \"deposit\": 2000,\n                \"parts\": [\n                    {\n                        \"id\": \"2\",\n                        \"name\": \"Recurring\",\n                        \"valueType\": \"priceMode\"\n                    },\n                    {\n                        \"id\": \"2\",\n                        \"name\": \"Monthly\",\n                        \"valueType\": \"Frequency\"\n                    }\n                ]\n            },\n            \"serviceSpecification\": [\n                {\n                    \"id\": \"58\",\n                    \"name\": \"PS_COMBO_BASE_PO\",\n                    \"parts\": [\n                        {\n                            \"id\": \"1\",\n                            \"value\": \"Base\",\n                            \"valueType\": \"type\"\n                        },\n                        {\n                            \"id\": \"0\",\n                            \"value\": \"Active\",\n                            \"valueType\": \"status\"\n                        },\n                        {\n                            \"id\": \"0\",\n                            \"value\": \"Combo\",\n                            \"valueType\": \"serviceType\"\n                        },\n                        {\n                            \"id\": \"0\",\n                            \"value\": \"1\",\n                            \"valueType\": \"productFamily\"\n                        }\n                    ],\n                    \"customerSpecification\": [\n                        {\n                            \"id\": \"22\",\n                            \"name\": \"CFSS_NCC\",\n                            \"parts\": [\n                                {\n                                    \"id\": \"1\",\n                                    \"valueType\": \"serviceType\"\n                                },\n                                {\n                                    \"id\": \"2\",\n                                    \"valueType\": \"serviceClass\"\n                                },\n                                {\n                                    \"id\": \"5\",\n                                    \"valueType\": \"transportType\"\n                                },\n                                {\n                                    \"id\": \"4\",\n                                    \"valueType\": \"serviceCategory\"\n                                }\n                            ],\n                            \"validFor\": {\n                                \"startDateTime\": \"05/12/2022\",\n                                \"endDateTime\": \"05/12/2024\"\n                            },\n                            \"characteristics\": [\n                                {\n                                    \"name\": \"EXTERNAL_OFFER_ID\",\n                                    \"value\": \"ADDON_DAILY_DATA_40MB\",\n                                    \"id\": \"1363\"\n                                },\n                                {\n                                    \"name\": \"IsRenewal\",\n                                    \"value\": \"true\"\n                                }\n                            ]\n                        }\n                    ]\n                }\n            ]\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Token BP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-source-system",
+						"value": "STEP",
+						"type": "text"
+					},
+					{
+						"key": "x-source-identity-token",
+						"value": "U2FmYXJpY29tOmUyZTplc2JldDpBdXRvbWF0aW9u",
+						"description": "static",
+						"type": "text"
+					},
+					{
+						"key": "x-correlation-conversationid",
+						"value": "1234",
+						"description": "unique ID",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"USSD\",\r\n    \"password\": \"kq5y0ZBdlB0dgOscRibKsA==\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://tibcobp.blueprint.lab/v1/token",
+					"protocol": "https",
+					"host": [
+						"tibcobp",
+						"blueprint",
+						"lab"
+					],
+					"path": [
+						"v1",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

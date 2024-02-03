@@ -1,0 +1,3825 @@
+---
+openapi: 3.0.3
+info:
+  title: Quote (development)
+  description: "**TMF API Reference : TMF 648 - Quote Management** \n\n **Release\
+    \ : 19.0 - June 2019** \n\n The Quote API provides a standardized mechanism for\
+    \ placing a quote with all of the necessary parameters. The API consists of a\
+    \ simple set of operations that interact with CRM/Quote/Pricing Negotiation systems\
+    \ in a consistent manner. A Quote is created based on product offering(s) that\
+    \ is(are) defined in a catalog. The quote identifies the product or set of products\
+    \ that are available to a customer for pricing request, and includes product characteristics.\
+    \ \n\n The Quote references the product offer(s) which (future) customer request\
+    \ pricing. Quote resource features authorization subclass to manage special pricing\
+    \ UC requiring authorization tracking management \n\n **Quote resource** \n\n\
+    \ A Quote can be used to request pricing between a customer and a service provider\
+    \ or between a service provider and a partner and vice versa. Main quote attributes\
+    \ are its identifier, state, priority, related dates (requested, expected, valid,\
+    \ completion, etc.), related parties and quote items. Main Quote Items attributes\
+    \ are the discribed offering and product characteristics with the related action\
+    \ to be performed (e.g. add, change or delete the products), location information,\
+    \ and product characteristics. \n\n Quote API performs the following operations\
+    \ on Quote : \n - Retrieval of a quote or a collection of quotes depending on\
+    \ filter criteria \n - Partial update of a quote (including updating rules) \n\
+    \ - Creation of a quote (including default values and creation rules) \n - Deletion\
+    \ of quote (for administration purposes) \n - Notification of events on quote.\
+    \ \n\n Copyright © TM Forum 2019. All Rights Reserved"
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 4.0.0
+tags:
+- name: events subscription
+- name: quote
+  description: Business operations on Quotes
+paths:
+  /hub:
+    post:
+      tags:
+      - events subscription
+      summary: Register a listener
+      description: "Sets the communication endpoint address the service instance must\
+        \ use to deliver information about its health state, execution state, failures\
+        \ and metrics."
+      requestBody:
+        description: Data containing the callback endpoint to deliver the information
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/EventSubscriptionInput'
+        required: true
+      responses:
+        "201":
+          description: Subscribed
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EventSubscription'
+        "400":
+          description: Bad Request
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "401":
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "403":
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "404":
+          description: Not Found
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "405":
+          description: Method Not allowed
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "409":
+          description: Conflict
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+      callbacks:
+        onEvent:
+          '{$request.body#/callback}':
+            post:
+              requestBody:
+                description: The event data
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Event'
+                required: true
+              responses:
+                "201":
+                  description: successful operation and no retries will be performed
+                "400":
+                  description: Bad Request
+                  content:
+                    application/json;charset=utf-8:
+                      schema:
+                        $ref: '#/components/schemas/Error1'
+                "401":
+                  description: Unauthorized
+                  content:
+                    application/json;charset=utf-8:
+                      schema:
+                        $ref: '#/components/schemas/Error1'
+                "403":
+                  description: Forbidden
+                  content:
+                    application/json;charset=utf-8:
+                      schema:
+                        $ref: '#/components/schemas/Error1'
+                "404":
+                  description: Not Found
+                  content:
+                    application/json;charset=utf-8:
+                      schema:
+                        $ref: '#/components/schemas/Error1'
+                "405":
+                  description: Method Not allowed
+                  content:
+                    application/json;charset=utf-8:
+                      schema:
+                        $ref: '#/components/schemas/Error1'
+                "409":
+                  description: Conflict
+                  content:
+                    application/json;charset=utf-8:
+                      schema:
+                        $ref: '#/components/schemas/Error1'
+                "500":
+                  description: Internal Server Error
+                  content:
+                    application/json;charset=utf-8:
+                      schema:
+                        $ref: '#/components/schemas/Error1'
+  /hub/{id}:
+    delete:
+      tags:
+      - events subscription
+      summary: Unregister a listener
+      description: "Resets the communication endpoint address the service instance\
+        \ must use to deliver information about its health state, execution state,\
+        \ failures and metrics."
+      parameters:
+      - name: id
+        in: path
+        description: The id of the registered listener
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Deleted
+        "400":
+          description: Bad Request
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "401":
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "403":
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "404":
+          description: Not Found
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "405":
+          description: Method Not allowed
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error1'
+  /quote:
+    get:
+      tags:
+      - quote
+      summary: List or find Quote objects
+      description: This operation list or find Quote entities
+      parameters:
+      - name: fields
+        in: query
+        description: Comma-separated properties to be provided in response
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Requested number of resources to be provided in response
+        schema:
+          format: int32
+          type: integer
+      - name: offset
+        in: query
+        description: Requested index for start of resources to be provided in response
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          description: OK
+          headers:
+            X-Total-Count:
+              description: Total number of items matching criteria
+              style: simple
+              schema:
+                type: integer
+            X-Result-Count:
+              description: Actual number of items returned in the response body
+              style: simple
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quote'
+        "400":
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "404":
+          description: Entity not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "405":
+          description: Not Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - quote
+      summary: Creates a Quote
+      description: This operation creates a Quote entity.
+      requestBody:
+        description: The Quote to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteCreate'
+        required: true
+      responses:
+        "201":
+          description: Resource created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        "400":
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "405":
+          description: Not Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+      security:
+      - bearerAuth: []
+  /quote/{id}:
+    get:
+      tags:
+      - quote
+      summary: Retrieves a Quote by ID
+      description: This operation retrieves a Quote entity. Attribute selection is
+        enabled for all first level attributes.
+      parameters:
+      - name: id
+        in: path
+        description: Identifier of the Quote
+        required: true
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: Comma-separated properties to provide in response
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        "400":
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "404":
+          description: Entity not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "405":
+          description: Not Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - quote
+      summary: Deletes a Quote
+      description: This operation deletes a Quote entity.
+      parameters:
+      - name: id
+        in: path
+        description: Identifier of the Quote
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Resource deleted
+        "400":
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "404":
+          description: Entity not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "405":
+          description: Not Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+      security:
+      - bearerAuth: []
+    patch:
+      tags:
+      - quote
+      summary: Updates partially a Quote
+      description: This operation updates partially a Quote entity.
+      parameters:
+      - name: id
+        in: path
+        description: Identifier of the Quote
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The patch to apply.
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/JsonPatch1'
+            example:
+            - op: replace
+              path: /category
+              value: cat6
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quote'
+            example:
+              category: cat5
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/Quote'
+            example:
+              category: cat5
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        "400":
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "404":
+          description: Entity not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "405":
+          description: Not Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error1'
+      security:
+      - bearerAuth: []
+  /status:
+    get:
+      tags:
+      - Commons
+      summary: Return the status of this API
+      description: A dedicated URI reserved to retrieve information about this API
+        status (for availability and monitoring purposes)
+      operationId: apiStatusGetStatus
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiStatus'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiStatus'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "406":
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "412":
+          description: Precondition Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "414":
+          description: Request-URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "422":
+          description: Unprocessable entityBusiness error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /doc:
+    get:
+      tags:
+      - Commons
+      summary: Return the OpenAPI 3.0-compliant API documentation of this API
+      description: A dedicated URI reserved to provide the OpenAPI 3.0-compliant documentation
+        of this API.
+      operationId: commonsGetDoc
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: "See [OpenAPI Specification 3.0](https://swagger.io/specification/"
+                type: object
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "406":
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "412":
+          description: Precondition Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "414":
+          description: Request-URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "422":
+          description: Unprocessable entityBusiness error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    AgreementItemRef:
+      description: "Agreement reference. An agreement represents a contract or arrangement,\
+        \ either written or verbal and sometimes enforceable by law, such as a com.obs.quote.service\
+        \ level agreement or a customer price agreement. An agreement involves a number\
+        \ of other business entities, such as products, services, and resources and/or\
+        \ their specifications."
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        agreementItemId:
+          description: Identifier of the agreement
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+    AgreementRef:
+      description: "Agreement reference. An agreement represents a contract or arrangement,\
+        \ either written or verbal and sometimes enforceable by law, such as a com.obs.quote.service\
+        \ level agreement or a customer price agreement. An agreement involves a number\
+        \ of other business entities, such as products, services, and resources and/or\
+        \ their specifications."
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the agreement
+          type: string
+    AppointmentRef:
+      description: "Refers an appointment, such as a Customer presentation or internal\
+        \ meeting or site visit"
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        description:
+          description: An explanatory text regarding the appointment made with a party
+          type: string
+        href:
+          description: The reference of the appointment
+          type: string
+        id:
+          description: The identifier of the referred appointment
+          type: string
+          nullable: false
+    Attachment:
+      description: "Complements the description of an element (for instance a product)\
+        \ through video, pictures..."
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        attachmentType:
+          description: "Attachment type such as video, picture"
+          type: string
+        content:
+          description: "The actual contents of the attachment object, if embedded,\
+            \ encoded as base64"
+          type: string
+        description:
+          description: A narrative text describing the content of the attachment
+          type: string
+        href:
+          description: URI for this Attachment
+          type: string
+        id:
+          description: Unique identifier for this particular attachment
+          type: string
+        mimeType:
+          description: "Attachment mime type such as extension file for video, picture\
+            \ and document"
+          type: string
+        name:
+          description: The name of the attachment
+          type: string
+        size:
+          allOf:
+          - $ref: '#/components/schemas/Quantity'
+          - description: The size of the attachment.
+        url:
+          description: "Uniform Resource Locator, is a web page address (a subset\
+            \ of URI)"
+          type: string
+        validFor:
+          allOf:
+          - $ref: '#/components/schemas/TimePeriod1'
+          - description: The period of time for which the attachment is valid
+    AttachmentRef:
+      description: "Attachment reference. An attachment complements the description\
+        \ of an element (for instance a product) through video, pictures"
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        description:
+          description: A narrative text describing the content of the attachment
+          type: string
+        href:
+          description: URL serving as reference for the attachment resource
+          type: string
+        id:
+          description: Unique-Identifier for this attachment
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+        url:
+          description: Link to the attachment media/content
+          type: string
+    AttachmentRefOrValue:
+      description: "An attachment by value or by reference. For AttachmentRefOrValue,\
+        \ the attribute type,schemaLocation and referredType are related to the contained\
+        \ entity and not to AttchmentRefOrValue itself"
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        attachmentType:
+          description: "Attachment type such as video, picture"
+          type: string
+        content:
+          description: "The actual contents of the attachment object, if embedded,\
+            \ encoded as base64"
+          type: string
+        description:
+          description: A narrative text describing the content of the attachment
+          type: string
+        href:
+          description: URI for this Attachment
+          type: string
+        id:
+          description: Unique identifier for this particular attachment
+          type: string
+        mimeType:
+          description: "Attachment mime type such as extension file for video, picture\
+            \ and document"
+          type: string
+        name:
+          description: The name of the attachment
+          type: string
+        size:
+          allOf:
+          - $ref: '#/components/schemas/Quantity'
+          - description: The size of the attachment.
+        url:
+          description: "Uniform Resource Locator, is a web page address (a subset\
+            \ of URI)"
+          type: string
+        validFor:
+          allOf:
+          - $ref: '#/components/schemas/TimePeriod1'
+          - description: The period of time for which the attachment is valid
+    Authorization:
+      description: If special discount or special product offering price or specific
+        condition need an approval for ISP sale representative it is described here.
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        approver:
+          description: RelatedParty responsible for approving Authorization
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedParty'
+        givenDate:
+          format: date-time
+          description: Date when the authorization (approved or declined) was done
+          type: string
+          example: 2000-01-23T04:56:07.000+00:00
+        name:
+          description: Name of the required authorization
+          type: string
+        requestedDate:
+          format: date-time
+          description: Date when the authorization is requested for
+          type: string
+        signatureRepresentation:
+          description: To describe a digital or manual signature
+          type: string
+        state:
+          description: "State of the authorization, such as: approved or declined"
+          type: string
+    BillingAccountRef:
+      description: BillingAccount reference. A BillingAccount is a detailed description
+        of a bill structure.
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the billing account
+          type: string
+        id:
+          description: Unique identifier of the billing account
+          type: string
+          nullable: false
+        name:
+          description: Name of the billing account
+          type: string
+    Characteristic:
+      description: Describes a given characteristic of an object or entity through
+        a name/value pair.
+      required:
+      - name
+      type: object
+      properties:
+        id:
+          description: id of the characteristic
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        name:
+          description: Name of the characteristic
+          type: string
+          nullable: false
+    CharacteristicChoiceValue:
+      description: Describes Characteristic value of type CharacteristicChoiceValue.
+      required:
+      - name
+      type: object
+      properties:
+        id:
+          description: id of the characteristic value
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        name:
+          description: Name of the characteristic value
+          type: string
+    CharacteristicObject:
+      description: Describes Characteristic of type object.
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        id:
+          description: id of the characteristic
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        name:
+          description: Name of the characteristic
+          type: string
+          nullable: false
+        value:
+          allOf:
+          - $ref: '#/components/schemas/CharacteristicObjectValue'
+          - description: The object value of the characteristic
+            nullable: false
+    CharacteristicObjectValue:
+      description: Describes Characteristic of type object.
+      type: object
+      properties:
+        id:
+          description: id of the characteristic value
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+    CharacteristicString:
+      description: Describes Characteristic of type string.
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        id:
+          description: id of the characteristic
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        name:
+          description: Name of the characteristic
+          type: string
+          nullable: false
+        value:
+          description: The string value of the characteristic
+          type: string
+          nullable: false
+    Entitlement:
+      description: An Entitlement defines access levels to operate over a given function
+        that can be included in an asset.
+      type: object
+      properties:
+        action:
+          description: Level of access granted as part of the permission.
+          type: string
+        function:
+          description: Specific function that can be managed over a given asset.
+          type: string
+        id:
+          description: Unique identifier of the entitlement.
+          type: string
+    EntityRef:
+      description: Entity reference schema to be use for all entityRef class.
+      required:
+      - href
+      - id
+      type: object
+      properties:
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of the related entity.
+          type: string
+    EntityRef1:
+      description: Entity reference schema to be use for all entityRef class.
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+    Error:
+      description: "Used when an API throws an Error, typically with a HTTP error\
+        \ response-code (3xx, 4xx, 5xx)"
+      required:
+      - code
+      - reason
+      type: object
+      properties:
+        _atBaseType:
+          description: "When sub-classing, this defines the super-class."
+          type: string
+        code:
+          description: "Application relevant detail, defined in the API or a common\
+            \ list."
+          type: string
+        message:
+          description: More details and corrective actions related to the error which
+            can be shown to a client user.
+          type: string
+        reason:
+          description: Explanation of the reason for the error which can be shown
+            to a client user.
+          type: string
+        referenceError:
+          description: URI of documentation describing the error.
+          type: string
+        _atSchemaLocation:
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        status:
+          description: HTTP Error code extension
+          type: string
+        _atType:
+          description: "When sub-classing, this defines the sub-class entity name."
+          type: string
+        '@baseType':
+          type: string
+        '@schemaLocation':
+          type: string
+        '@type':
+          type: string
+    Error1:
+      description: "Used when an API throws an Error, typically with a HTTP error\
+        \ response-code (3xx, 4xx, 5xx)"
+      required:
+      - code
+      - reason
+      type: object
+      properties:
+        code:
+          description: "Application relevant detail, defined in the API or a common\
+            \ list."
+          type: string
+          nullable: false
+        message:
+          description: More details and corrective actions related to the error which
+            can be shown to a client user.
+          type: string
+        reason:
+          description: Explanation of the reason for the error which can be shown
+            to a client user.
+          type: string
+          nullable: false
+        referenceError:
+          format: uri
+          description: URI of documentation describing the error.
+          type: string
+        status:
+          description: HTTP Error code extension
+          type: string
+        '@baseType':
+          description: "When sub-classing, this defines the super-class."
+          type: string
+        '@schemaLocation':
+          format: uri
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name."
+          type: string
+    ErrorNote:
+      description: Information about errors in a given entity
+      required:
+      - id
+      - text
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        author:
+          description: Author of the note
+          type: string
+        date:
+          format: date-time
+          description: Date of the note
+          type: string
+        id:
+          description: "Identifier of the note within its containing entity (may or\
+            \ may not be globally unique, depending on provider implementation)"
+          type: string
+          nullable: false
+        text:
+          description: Text of the note
+          type: string
+          nullable: false
+    Event:
+      description: The notification data structure
+      type: object
+      properties:
+        eventId:
+          description: The identifier of the notification.
+          type: string
+        fieldPath:
+          description: The path identifying the object field concerned by this notification.
+          type: string
+        eventTime:
+          format: date-time
+          description: Time of the event occurrence.
+          type: string
+        description:
+          description: An explanatory of the event.
+          type: string
+        timeOcurred:
+          format: date-time
+          description: The time the event occured.
+          type: string
+        title:
+          description: The title of the event.
+          type: string
+        eventType:
+          description: The type of the notification.
+          type: string
+        domain:
+          description: The domain of the event.
+          type: string
+        priority:
+          description: A priority.
+          type: string
+        correlationId:
+          description: The correlation id for this event.
+          type: string
+        event:
+          description: The event payload linked to the involved resource object
+          type: object
+    EventSubscription:
+      description: Sets the communication endpoint address the service instance must
+        use to deliver notification information
+      required:
+      - id
+      - callback
+      type: object
+      properties:
+        id:
+          description: Id of the listener
+          type: string
+          nullable: false
+        callback:
+          description: The callback being registered.
+          type: string
+          nullable: false
+        query:
+          description: additional data to be passed
+          type: string
+    EventSubscriptionInput:
+      description: Sets the communication endpoint address the service instance must
+        use to deliver notification information
+      required:
+      - callback
+      type: object
+      properties:
+        callback:
+          description: The callback being registered.
+          type: string
+          nullable: false
+        query:
+          description: additional data to be passed
+          type: string
+    ExternalIdentifier:
+      type: object
+      properties:
+        id:
+          type: string
+        externalIdentifierType:
+          type: string
+        owner:
+          type: string
+    GeographicAddress:
+      description: A geographic address is a structured textual way of describing
+        how to find a Property in an urban area (country properties are often defined
+        differently)
+      required:
+      - role
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Unique reference of the place
+          type: string
+        id:
+          description: Unique identifier of the place
+          type: string
+        name:
+          description: "A user-friendly name for the place, such as [Paris Store],\
+            \ [London Store], [Main Home]"
+          type: string
+        role:
+          description: Role attributed to related place
+          type: string
+          nullable: false
+        streetNr:
+          description: Number identifying a specific property on a public street.
+            It may be combined with streetNrLast for ranged addresses
+          type: string
+        streetNrSuffix:
+          description: The first street number suffix
+          type: string
+        streetNrLast:
+          description: Last number in a range of street numbers allocated to a property
+          type: string
+        streetNrLastSuffix:
+          description: Last street number suffix for a ranged address
+          type: string
+        streetName:
+          description: Name of the street or other street type
+          type: string
+        streetType:
+          description: "Alley, avenue, boulevard, brae, crescent, drive, highway,\
+            \ lane, terrace, parade, place, tarn, way, wharf"
+          type: string
+        streetSuffix:
+          description: A modifier denoting a relative direction
+          type: string
+        postcode:
+          description: "Descriptor for a postal delivery area, used to speed and simplify\
+            \ the delivery of mail (also known as zipcode)"
+          type: string
+        locality:
+          description: "\"An area of defined or undefined boundaries within a local\
+            \ authority or other legislatively defined area, usually rural or semi-rural\
+            \ in nature.\" [ANZLIC-STREET], or a suburb \"a bounded locality within\
+            \ a city, town or shire principally of urban character \" [ANZLICSTREET]."
+          type: string
+        city:
+          description: City that the address is in
+          type: string
+        country:
+          description: Country that the address is in
+          type: string
+        geographicSubAddress:
+          description: "It is used for addressing within a property in an urban area\
+            \ (country properties are often defined differently). It may refer to\
+            \ a building, a building cluster, or a floor of a multistory building."
+          type: array
+          items:
+            $ref: '#/components/schemas/GeographicSubAddress'
+        geographicLocation:
+          allOf:
+          - $ref: '#/components/schemas/RelatedGeographicLocation'
+          - description: A RelatedGeographicLocation allows describing through coordinate(s)
+              a point
+    GeographicAddressFullText:
+      description: A GeographicAddress allows describing fullText address
+      required:
+      - role
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Unique reference of the place
+          type: string
+        id:
+          description: Unique identifier of the place
+          type: string
+        name:
+          description: "A user-friendly name for the place, such as [Paris Store],\
+            \ [London Store], [Main Home]"
+          type: string
+        role:
+          description: Role attributed to related place
+          type: string
+          nullable: false
+        streetNr:
+          description: Number identifying a specific property on a public street.
+            It may be combined with streetNrLast for ranged addresses
+          type: string
+        streetNrSuffix:
+          description: The first street number suffix
+          type: string
+        streetNrLast:
+          description: Last number in a range of street numbers allocated to a property
+          type: string
+        streetNrLastSuffix:
+          description: Last street number suffix for a ranged address
+          type: string
+        streetName:
+          description: Name of the street or other street type
+          type: string
+        streetType:
+          description: "Alley, avenue, boulevard, brae, crescent, drive, highway,\
+            \ lane, terrace, parade, place, tarn, way, wharf"
+          type: string
+        streetSuffix:
+          description: A modifier denoting a relative direction
+          type: string
+        postcode:
+          description: "Descriptor for a postal delivery area, used to speed and simplify\
+            \ the delivery of mail (also known as zipcode)"
+          type: string
+        locality:
+          description: "\"An area of defined or undefined boundaries within a local\
+            \ authority or other legislatively defined area, usually rural or semi-rural\
+            \ in nature.\" [ANZLIC-STREET], or a suburb \"a bounded locality within\
+            \ a city, town or shire principally of urban character \" [ANZLICSTREET]."
+          type: string
+        city:
+          description: City that the address is in
+          type: string
+        country:
+          description: Country that the address is in
+          type: string
+        geographicSubAddress:
+          description: "It is used for addressing within a property in an urban area\
+            \ (country properties are often defined differently). It may refer to\
+            \ a building, a building cluster, or a floor of a multistory building."
+          type: array
+          items:
+            $ref: '#/components/schemas/GeographicSubAddress'
+        geographicLocation:
+          allOf:
+          - $ref: '#/components/schemas/RelatedGeographicLocation'
+          - description: A RelatedGeographicLocation allows describing through coordinate(s)
+              a point
+        addressFullText:
+          description: address in full text format
+          type: string
+    GeographicAddressRivoli:
+      description: A GeographicAddress allows describing rivoli address
+      required:
+      - role
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Unique reference of the place
+          type: string
+        id:
+          description: Unique identifier of the place
+          type: string
+        name:
+          description: "A user-friendly name for the place, such as [Paris Store],\
+            \ [London Store], [Main Home]"
+          type: string
+        role:
+          description: Role attributed to related place
+          type: string
+          nullable: false
+        streetNr:
+          description: Number identifying a specific property on a public street.
+            It may be combined with streetNrLast for ranged addresses
+          type: string
+        streetNrSuffix:
+          description: The first street number suffix
+          type: string
+        streetNrLast:
+          description: Last number in a range of street numbers allocated to a property
+          type: string
+        streetNrLastSuffix:
+          description: Last street number suffix for a ranged address
+          type: string
+        streetName:
+          description: Name of the street or other street type
+          type: string
+        streetType:
+          description: "Alley, avenue, boulevard, brae, crescent, drive, highway,\
+            \ lane, terrace, parade, place, tarn, way, wharf"
+          type: string
+        streetSuffix:
+          description: A modifier denoting a relative direction
+          type: string
+        postcode:
+          description: "Descriptor for a postal delivery area, used to speed and simplify\
+            \ the delivery of mail (also known as zipcode)"
+          type: string
+        locality:
+          description: "\"An area of defined or undefined boundaries within a local\
+            \ authority or other legislatively defined area, usually rural or semi-rural\
+            \ in nature.\" [ANZLIC-STREET], or a suburb \"a bounded locality within\
+            \ a city, town or shire principally of urban character \" [ANZLICSTREET]."
+          type: string
+        city:
+          description: City that the address is in
+          type: string
+        country:
+          description: Country that the address is in
+          type: string
+        geographicSubAddress:
+          description: "It is used for addressing within a property in an urban area\
+            \ (country properties are often defined differently). It may refer to\
+            \ a building, a building cluster, or a floor of a multistory building."
+          type: array
+          items:
+            $ref: '#/components/schemas/GeographicSubAddress'
+        geographicLocation:
+          allOf:
+          - $ref: '#/components/schemas/RelatedGeographicLocation'
+          - description: A RelatedGeographicLocation allows describing through coordinate(s)
+              a point
+        cityCode:
+          description: City code
+          type: string
+        streetCode:
+          description: Street code
+          type: string
+    GeographicPoint:
+      description: A GeographicPoint defines a geographic point through coordinates.
+      type: object
+      properties:
+        x:
+          description: x coordinate (usually latitude)
+          type: string
+        "y":
+          description: y coordinate (usually longitude)
+          type: string
+        z:
+          description: z coordinate (usually elevation)
+          type: string
+    GeographicSite:
+      description: A GeographicSite allows describing a site
+      required:
+      - role
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Unique reference of the place
+          type: string
+        id:
+          description: Unique identifier of the place
+          type: string
+        name:
+          description: "A user-friendly name for the place, such as [Paris Store],\
+            \ [London Store], [Main Home]"
+          type: string
+        role:
+          description: Role attributed to related place
+          type: string
+          nullable: false
+        geographicAddress:
+          description: The geographic addresses
+          type: array
+          items:
+            $ref: '#/components/schemas/GeographicAddress'
+    GeographicSiteBuilding:
+      description: A GeographicSiteBuilding allows describing site building
+      required:
+      - role
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Unique reference of the place
+          type: string
+        id:
+          description: Unique identifier of the place
+          type: string
+        name:
+          description: "A user-friendly name for the place, such as [Paris Store],\
+            \ [London Store], [Main Home]"
+          type: string
+        role:
+          description: Role attributed to related place
+          type: string
+          nullable: false
+        geographicAddress:
+          description: The geographic addresses
+          type: array
+          items:
+            $ref: '#/components/schemas/GeographicAddress'
+        buildingCode:
+          description: Value of building code
+          type: string
+        buildingType:
+          description: Type of building
+          type: string
+    GeographicSiteCustomerTermination:
+      description: A GeographicSiteCustomerTermination allows describing site customr
+        termination
+      required:
+      - role
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Unique reference of the place
+          type: string
+        id:
+          description: Unique identifier of the place
+          type: string
+        name:
+          description: "A user-friendly name for the place, such as [Paris Store],\
+            \ [London Store], [Main Home]"
+          type: string
+        role:
+          description: Role attributed to related place
+          type: string
+          nullable: false
+        geographicAddress:
+          description: The geographic addresses
+          type: array
+          items:
+            $ref: '#/components/schemas/GeographicAddress'
+        customerTerminationNumber:
+          description: Customer termination number value
+          type: string
+        customerTerminationType:
+          description: Customer termination type value
+          type: string
+    GeographicSubAddress:
+      description: "It is used for addressing within a property in an urban area (country\
+        \ properties are often defined differently). It may refer to a building, a\
+        \ building cluster, or a floor of a multistory building."
+      type: object
+      properties:
+        id:
+          description: Unique Identifier of the subAddress
+          type: string
+        href:
+          description: Href of the subAddress
+          type: string
+        '@type':
+          description: Type of the resource for this subAdress
+          type: string
+        subUnitType:
+          description: "The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER,\
+            \ UNIT, WHARF."
+          type: string
+        subUnitNumber:
+          description: "The discriminator used for the subunit often just a simple\
+            \ number e.g. FLAT 5, may also be a range"
+          type: string
+        levelType:
+          description: Describes level types within a building
+          type: string
+        levelNumber:
+          description: "Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT\
+            \ 2"
+          type: string
+        buildingName:
+          description: Allows for buildings that have well-known names
+          type: string
+        '@schemaLocation':
+          description: A link to the schema describing this REST Resource
+          type: string
+    JsonPatch:
+      description: JSONPatch
+      type: object
+      properties:
+        op:
+          description: The operation to perform.
+          type: string
+        path:
+          description: A JSON Pointer path.
+          type: string
+        value:
+          description: "The value to add, replace"
+          type: object
+    JsonPatch1:
+      type: object
+      properties:
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonPatchOperation'
+    JsonPatchOperation:
+      type: object
+      properties:
+        op:
+          type: string
+        path:
+          $ref: '#/components/schemas/JsonPointer'
+    JsonPointer:
+      type: array
+    LegalNotices:
+      description: Legal notices related to given entity.
+      required:
+      - id
+      - text
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        author:
+          description: Author of the note
+          type: string
+        date:
+          format: date-time
+          description: Date of the note
+          type: string
+        id:
+          description: "Identifier of the note within its containing entity (may or\
+            \ may not be globally unique, depending on provider implementation)"
+          type: string
+          nullable: false
+        text:
+          description: Text of the note
+          type: string
+          nullable: false
+    MediumCharacteristic:
+      description: Describes the contact medium characteristics that could be used
+        to contact a party (an individual or an organization)
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        city:
+          description: The city
+          type: string
+        contactType:
+          description: "The type of contact, for example: phone number such as mobile,\
+            \ fixed home, fixed office. postal address such as shipping instalation…"
+          type: string
+        country:
+          description: The country
+          type: string
+        emailAddress:
+          description: Full email address in standard format
+          type: string
+        faxNumber:
+          description: The fax number of the contact
+          type: string
+        phoneNumber:
+          description: The primary phone number of the contact
+          type: string
+        postCode:
+          description: Postcode
+          type: string
+        socialNetworkId:
+          description: Identifier as a member of a social network
+          type: string
+        stateOrProvince:
+          description: State or province
+          type: string
+        street1:
+          description: Describes the street
+          type: string
+        street2:
+          description: Complementary street description
+          type: string
+    Money:
+      description: A base / value business entity used to represent money
+      type: object
+      properties:
+        unit:
+          description: Currency (ISO4217 norm uses 3 letters to define the currency)
+          type: string
+        value:
+          format: float
+          description: A positive floating point number
+          type: number
+    Note:
+      description: Extra information about a given entity
+      required:
+      - id
+      - text
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        author:
+          description: Author of the note
+          type: string
+        date:
+          format: date-time
+          description: Date of the note
+          type: string
+        id:
+          description: "Identifier of the note within its containing entity (may or\
+            \ may not be globally unique, depending on provider implementation)"
+          type: string
+          nullable: false
+        text:
+          description: Text of the note
+          type: string
+          nullable: false
+    Place:
+      description: Place reference. Place defines the places where the products are
+        sold or delivered.
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Unique reference of the place
+          type: string
+        id:
+          description: Unique identifier of the place
+          type: string
+        name:
+          description: "A user-friendly name for the place, such as [Paris Store],\
+            \ [London Store], [Main Home]"
+          type: string
+    PlaceRef:
+      description: Place reference. PlaceRef defines the placeRefs where the products
+        are sold or delivered.
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+    Price:
+      description: "Provides all amounts (tax included, duty free, tax rate), used\
+        \ currency and percentage to apply for Price Alteration."
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        dutyFreeAmount:
+          allOf:
+          - $ref: '#/components/schemas/Money'
+          - description: All taxes excluded amount (expressed in the given currency)
+        percentage:
+          format: float
+          description: Percentage to apply for ProdOfferPriceAlteration
+          type: number
+        taxIncludedAmount:
+          allOf:
+          - $ref: '#/components/schemas/Money'
+          - description: All taxes included amount (expressed in the given currency)
+        taxRate:
+          format: float
+          description: Tax rate
+          type: number
+    PriceAlteration:
+      description: "Is an amount, usually of money, that modifies the price charged\
+        \ for an order item."
+      required:
+      - price
+      - priceType
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        applicationDuration:
+          format: int32
+          description: Duration during which the alteration applies on the order item
+            price (for instance 2 months free of charge for the recurring charge)
+          type: integer
+        description:
+          description: A narrative that explains in detail the semantics of this order
+            item price alteration
+          type: string
+        name:
+          description: Name of the order item price alteration
+          type: string
+        price:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          - description: "Provides all amounts (tax included, duty free, tax rate),\
+              \ used currency and percentage to apply for Price Alteration."
+            nullable: false
+        priceType:
+          description: "A category that describes the price such as recurring, one\
+            \ time and usage."
+          type: string
+          nullable: false
+        priority:
+          format: int32
+          description: Priority level for applying this alteration among all the defined
+            alterations on the order item price
+          type: integer
+        productOfferingPrice:
+          allOf:
+          - $ref: '#/components/schemas/ProductOfferingPriceRef'
+          - description: "ProductPriceOffering reference. An amount, usually of money,\
+              \ that is asked for or allowed when a ProductOffering is bought, rented,\
+              \ or leased"
+        recurringChargePeriod:
+          description: "Could be month, week..."
+          type: string
+        unitOfMeasure:
+          description: "Could be minutes, GB..."
+          type: string
+    Product:
+      description: A product offering procured by a customer or other interested party
+        playing a party role. A product is realized as one or more com.obs.quote.service(s)
+        and / or resource(s).
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        agreement:
+          description: Agreements related to product
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementItemRef'
+        billingAccount:
+          allOf:
+          - $ref: '#/components/schemas/BillingAccountRef'
+          - description: Billing account for product
+        description:
+          description: Is the description of the product. It could be copied from
+            the description of the Product Offering.
+          type: string
+        href:
+          description: Reference of the product
+          type: string
+        id:
+          description: Unique identifier of the product
+          type: string
+        isBundle:
+          description: "If true, the product is a ProductBundle which is an instantiation\
+            \ of a BundledProductOffering. If false, the product is a ProductComponent\
+            \ which is an instantiation of a SimpleProductOffering."
+          type: boolean
+        isCustomerVisible:
+          description: "If true, the product is visible by the customer."
+          type: boolean
+        name:
+          description: Name of the product. It could be the same as the name of the
+            product offering
+          type: string
+        orderDate:
+          format: date
+          description: Is the date when the product was ordered
+          type: string
+        place:
+          description: Place related to product entity
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        product:
+          description: A product to be created defined by value or existing defined
+            by reference.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductRefOrValue'
+        productCharacteristic:
+          description: A collection of product characteristics.
+          type: array
+          items:
+            $ref: '#/components/schemas/Characteristic'
+        productOffering:
+          allOf:
+          - $ref: '#/components/schemas/ProductOfferingRef'
+          - description: Refference to orderable product.
+        productOrderItem:
+          description: A collection of product order items which triggered product
+            creation/change/termination.
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedProductOrderItem'
+        productPrice:
+          description: The actual price paid by a Customer for the Product.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductPrice'
+        productRelationship:
+          description: Linked products to the one instantiate.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductRelationship'
+        productSerialNumber:
+          description: Is the serial number for the product. This is typically applicable
+            to tangible products e.g. Broadband Router.
+          type: string
+        productSpecification:
+          allOf:
+          - $ref: '#/components/schemas/ProductSpecificationRef'
+          - description: A detailed description of a tangible or intangible object
+              made available externally in the form of a ProductOffering to customers
+              or other parties playing a party role.
+        productTerm:
+          description: This represents a commitment with a duration.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductTerm'
+        realizingResource:
+          description: Collection of resources related to product.
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceRef'
+        realizingService:
+          description: Collection of services related to current product.
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRef'
+        relatedParty:
+          description: Parties related to current product.
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedParty'
+        startDate:
+          format: date
+          description: Is the date from which the product starts
+          type: string
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ProductStatusType'
+          - description: Is the lifecycle status of the product.
+        terminationDate:
+          format: date
+          description: Is the date when the product was terminated
+          type: string
+    ProductOfferingPriceRef:
+      description: "ProductPriceOffering reference. An amount, usually of money, that\
+        \ is asked for or allowed when a ProductOffering is bought, rented, or leased"
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+    ProductOfferingQualificationItemRef:
+      description: It's a productOfferingQualification item that has been executed
+        previously.
+      required:
+      - id
+      - productOfferingQualificationId
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Id of an item of a product offering qualification
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+        productOfferingQualificationHref:
+          description: Reference of the related entity.
+          type: string
+        productOfferingQualificationId:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        productOfferingQualificationName:
+          description: Name of the related entity.
+          type: string
+    ProductOfferingQualificationItemValue:
+      description: It's a productOfferingQualification item that has been executed
+        previously.
+      required:
+      - id
+      - productOfferingQualificationId
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Id of an item of a product offering qualification
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+        productOfferingQualificationHref:
+          description: Reference of the related entity.
+          type: string
+        productOfferingQualificationId:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        productOfferingQualificationName:
+          description: Name of the related entity.
+          type: string
+        characteristics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Characteristic'
+        eligibility:
+          type: string
+        qualificationDate:
+          format: date-time
+          type: string
+    ProductOfferingQualificationRef:
+      description: It's a productOfferingQualification that has been executed previously
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+    ProductOfferingRef:
+      description: "ProductOffering reference. A product offering represents entities\
+        \ that are orderable from the provider of the catalog, this resource includes\
+        \ pricing information."
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+        productOfferingType:
+          description: ProductOfferingType of the related entity.
+          type: string
+    ProductPrice:
+      description: "An amount, usually of money, that represents the actual price\
+        \ paid by a Customer for a purchase, a rent or a lease of a Product. The price\
+        \ is valid for a defined period of time."
+      required:
+      - price
+      - priceType
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        billingAccount:
+          allOf:
+          - $ref: '#/components/schemas/BillingAccountRef'
+          - description: BillingAccount reference.
+        description:
+          description: A narrative that explains in detail the semantics of this product
+            price.
+          type: string
+        name:
+          description: A short descriptive name such as "Subscription price".
+          type: string
+        price:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          - description: "Provides all amounts (tax included, duty free, tax rate),\
+              \ used currency and percentage to apply for Price Alteration."
+            nullable: false
+        priceType:
+          description: "A category that describes the price, such as recurring, discount,\
+            \ allowance, penalty, and so forth."
+          type: string
+          nullable: false
+        productOfferingPrice:
+          allOf:
+          - $ref: '#/components/schemas/ProductOfferingPriceRef'
+          - description: "ProductPriceOffering reference. An amount, usually of money,\
+              \ that is asked for or allowed when a ProductOffering is bought, rented,\
+              \ or leased"
+        productPriceAlteration:
+          description: "Is an amount, usually of money, that modifies the price charged\
+            \ for an order item."
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceAlteration'
+        recurringChargePeriod:
+          description: "Could be month, week..."
+          type: string
+        unitOfMeasure:
+          description: "Could be minutes, GB..."
+          type: string
+    ProductRef:
+      description: Product item that has been executed previously.
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+    ProductRefOrValue:
+      description: "A product to be created defined by value or existing defined by\
+        \ reference. The polymorphic attributes @type, @schemaLocation & @referredType\
+        \ are related to the product entity and not the RelatedProductRefOrValue class\
+        \ itself"
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        agreement:
+          description: Agreements related to current entity.
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementItemRef'
+        billingAccount:
+          allOf:
+          - $ref: '#/components/schemas/BillingAccountRef'
+          - description: A detailed description of a bill structure.
+        description:
+          description: Is the description of the product. It could be copied from
+            the description of the Product Offering.
+          type: string
+        href:
+          description: Reference of the product
+          type: string
+        id:
+          description: Unique identifier of the product
+          type: string
+        isBundle:
+          description: "If true, the product is a ProductBundle which is an instantiation\
+            \ of a BundledProductOffering. If false, the product is a ProductComponent\
+            \ which is an instantiation of a SimpleProductOffering."
+          type: boolean
+        isCustomerVisible:
+          description: "If true, the product is visible by the customer."
+          type: boolean
+        name:
+          description: Name of the product. It could be the same as the name of the
+            product offering
+          type: string
+        orderDate:
+          format: date-time
+          description: Is the date when the product was ordered
+          type: string
+        place:
+          description: Place related to current entity.
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedPlaceRefOrValue'
+        product:
+          description: Collection of related products.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductRefOrValue'
+        productCharacteristic:
+          description: Collection of product characteristics.
+          type: array
+          items:
+            $ref: '#/components/schemas/Characteristic'
+        productOffering:
+          allOf:
+          - $ref: '#/components/schemas/ProductOfferingRef'
+          - description: Entity that is orderable from the provider of the catalog.
+        productOrderItem:
+          description: Collection of product order item which triggered product creation/change/termination.
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedProductOrderItem'
+        productPrice:
+          description: "An amount, usually of money, that represents the actual price\
+            \ paid by a Customer for a Product."
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductPrice'
+        productRelationship:
+          description: Collection of product relationships linked to the current one.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductRelationship'
+        productSerialNumber:
+          description: Is the serial number for the product. This is typically applicable
+            to tangible products e.g. Broadband Router.
+          type: string
+        productSpecification:
+          allOf:
+          - $ref: '#/components/schemas/ProductSpecificationRef'
+          - description: A detailed description of a tangible or intangible object.
+        productTerm:
+          description: A collection of commitments with a duration.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductTerm'
+        realizingResource:
+          description: Collection of resource references related to current product.
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceRef'
+        realizingService:
+          description: Collection of services related to current entity.
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRef'
+        relatedParty:
+          description: Parties related to current entity.
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedParty'
+        startDate:
+          format: date-time
+          description: Is the date from which the product starts
+          type: string
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ProductStatusType'
+          - description: Is the lifecycle status of the product.
+        terminationDate:
+          format: date-time
+          description: Is the date when the product was terminated
+          type: string
+    ProductRelationship:
+      description: "Linked products to the one instantiate, such as [bundled] if the\
+        \ product is a bundle and you want to describe the bundled products inside\
+        \ this bundle; [reliesOn] if the product needs another already owned product\
+        \ to rely on (e.g. an option on an already owned mobile access product) [targets]\
+        \ or [isTargeted] (depending on the way of expressing the link) for any other\
+        \ kind of links that may be useful"
+      required:
+      - product
+      - relationshipType
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        product:
+          allOf:
+          - $ref: '#/components/schemas/ProductRefOrValue'
+          - description: Product concerned bny this relationship.
+            nullable: false
+        relationshipType:
+          description: "Type of the product relationship, such as [bundled] if the\
+            \ product is a bundle and you want to describe the bundled products inside\
+            \ this bundle; [reliesOn] if the product needs another already owned product\
+            \ to rely on (e.g. an option on an already owned mobile access product)\
+            \ [targets] or [isTargeted] (depending on the way of expressing the link)\
+            \ for any other kind of links that may be useful"
+          type: string
+          nullable: false
+    ProductSpecificationRef:
+      description: "Product specification reference: A ProductSpecification is a detailed\
+        \ description of a tangible or intangible object made available externally\
+        \ in the form of a ProductOffering to customers or other parties playing a\
+        \ party role."
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+        targetProductSchema:
+          allOf:
+          - $ref: '#/components/schemas/TargetProductSchema'
+          - description: A target product schema reference. The reference object to
+              the schema and type of target product which is described by product
+              specification.
+        version:
+          description: Version of the product specification
+          type: string
+    ProductStatusType:
+      enum:
+      - CREATED
+      - PENDINGACTIVE
+      - CANCELLED
+      - ACTIVE
+      - PENDINGTERMINATE
+      - TERMINATED
+      - SUSPENDED
+      - ABORTED_
+      type: string
+    ProductTerm:
+      description: Description of a productTerm linked to this product. This represents
+        a commitment with a duration.
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        description:
+          description: Description of the productTerm
+          type: string
+        duration:
+          allOf:
+          - $ref: '#/components/schemas/Quantity'
+          - description: Duration of the productTerm
+        name:
+          description: Name of the productTerm
+          type: string
+        validFor:
+          allOf:
+          - $ref: '#/components/schemas/TimePeriod1'
+          - description: productTerm validity period
+    Quantity:
+      description: An amount in a given unit
+      type: object
+      properties:
+        amount:
+          format: float
+          description: Numeric value in a given unit
+          type: number
+        units:
+          description: Unit
+          type: string
+    Quote:
+      description: "Quote can be used to negotiate com.obs.quote.service and product\
+        \ acquisition or modification between a customer and a com.obs.quote.service\
+        \ provider. Quote contain list of quote items, a reference to customer (partyRole),\
+        \ a list of productOffering and attached prices and conditions."
+      required:
+      - quoteItem
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        agreement:
+          description: A reference to an agreement defining the context of the quote
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementRef'
+        authorization:
+          description: An authorization provided for the quote
+          type: array
+          items:
+            $ref: '#/components/schemas/Authorization'
+        billingAccount:
+          description: 'A reference to a billing account to provide quote context
+            information '
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingAccountRef'
+        category:
+          description: "Used to categorize the quote from a business perspective that\
+            \ can be useful for the CRM system (e.g. \"enterprise\", \"residential\"\
+            , ...)"
+          type: string
+        description:
+          description: Description of the quote
+          type: string
+        title:
+          type: string
+        effectiveQuoteCompletionDate:
+          format: date-time
+          description: Date when the quote has been completed
+          type: string
+        expectedFulfillmentStartDate:
+          format: date-time
+          description: this is the date wished by the requester to have the requested
+            quote item delivered
+          type: string
+        expectedQuoteCompletionDate:
+          format: date-time
+          description: This is expected date - from quote supplier - to be able to
+            send back  a response for this quote
+          type: string
+        'lastUpdateDate ':
+          format: date-time
+          description: this is the date of the last update on the quote
+          type: string
+        externalIdentifier:
+          description: A list of external identifiers given by the consumers and only
+            understandable by them (to facilitate his searches afterwards)
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentifier'
+        id:
+          description: Unique identifier - attributed by quoting system
+          type: string
+        instantSyncQuote:
+          description: 'An indicator which when the value is "true" means that requester
+            expects to get quoting result immediately in the response. If the indicator
+            is true then the response code of 200 indicates the operation is successful
+            otherwise a task is created with a response 201. '
+          type: boolean
+        note:
+          description: Free form text associated with the quote
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
+        productOfferingQualification:
+          description: A reference to a previously done product offering qualification
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductOfferingQualificationRef'
+        quoteDate:
+          format: date-time
+          description: Date and time when the quote was created
+          type: string
+        quoteItem:
+          description: An item of the quote - it is used to descirbe an operation
+            on a product to be quoted
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QuoteItem'
+          nullable: false
+        quoteTotalPrice:
+          description: Quote total price
+          type: array
+          items:
+            $ref: '#/components/schemas/QuotePrice'
+        relatedParty:
+          description: "A reference to a party playing a role in this quote (customer,\
+            \ seller, requester, etc.)"
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedParty'
+        requestedQuoteCompletionDate:
+          format: date-time
+          description: This is requested date - from quote requester - to get a complete
+            response for this quote
+          type: string
+        state:
+          allOf:
+          - $ref: '#/components/schemas/QuoteStateType'
+          - description: "State of the quote : described in the state-machine diagram"
+        validFor:
+          allOf:
+          - $ref: '#/components/schemas/TimePeriod1'
+          - description: Quote validity period
+        version:
+          description: Quote version - if the customer rejected the quote but  negotiations
+            still open a new version of the quote is managed
+          type: string
+        quoteLevel:
+          description: Quote level - define type of the quote
+          default: COTATION
+          type: string
+        requestedDebit:
+          format: double
+          type: number
+        quoteSpecification:
+          description: Quote specification
+          type: string
+        href:
+          description: Hyperlink to access the quote
+          type: string
+          readOnly: true
+      example:
+        category: OWF Quote
+        description: Quote illustration Ariane
+        expectedFulfillmentStartDate: 2019-05-21T12:45:12.028Z
+        externalId: QO-tr-89
+        instantSyncQuote: false
+        requestedQuoteCompletionDate: 2019-05-14T12:45:12.028Z
+        version: "1"
+        '@type': Quote
+        quoteLevel: COTATION
+        productOfferingQualification:
+        - id: 22ds-ty55
+          href: https://host:port/productOfferingQualificationManagement/v4/productOfferingQualification/22ds-ty55
+        quoteItem:
+        - id: "13"
+          action: add
+          quantity: 1
+          productOffering:
+            id: Ariane
+            href: https://host:port/productCatalogManagement/v4/productOffering/Ariane
+            name: Ariane
+          quoteItem:
+          - id: "22"
+            action: add
+            quantity: 1
+            product:
+              '@type': product
+              productCharacteristic:
+              - name: Collecte
+                valueType: string
+                value: Optimum collecte
+              - name: Type de raccordement
+                valueType: string
+                value: OI
+              - name: Prise existante
+                valueType: boolean
+                value: "true"
+              - name: Débit d'accès
+                valueType: string
+                value: 300M/300M
+              - name: Multi accès
+                valueType: boolean
+                value: "false"
+              productSpecification:
+                id: ssp7-ty89
+                href: https://host:port/productCatalogManagement/v4/productSpecification/Acces
+                name: Accès
+          - id: "23"
+            action: add
+            quantity: 1
+            product:
+              '@type': product
+              productCharacteristic:
+              - name: GTR
+                valueType: string
+                value: 10 heures HO (heures ouvrables)
+              - name: Point de livraison
+                valueType: string
+                value: sur DTIO/PTO
+              - name: Reference PTO
+                valueType: string
+                value: XXXXXXXX
+              productSpecification:
+                id: ssp7-ty89
+                href: https://host:port/productCatalogManagement/v4/productSpecification/ServicesEtOptions
+                name: Services et options
+    QuoteCreate:
+      description: "Quote can be used to negotiate com.obs.quote.service and product\
+        \ acquisition or modification between a customer and a com.obs.quote.service\
+        \ provider. Quote contain list of quote items, a reference to customer (partyRole),\
+        \ a list of productOffering and attached prices and conditions. Skipped properties:\
+        \ href,quoteDate,state,effectiveQuoteCompletionDate,quoteAuthorization,quoteTotalPrice,expectedQuoteCompletionDate,validFor"
+      required:
+      - quoteItem
+      type: object
+      properties:
+        EX_BODY_PATCH_TO_APPLY:
+          type: string
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        agreement:
+          description: A reference to an agreement defining the context of the quote
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementRef'
+        authorization:
+          description: An authorization provided for the quote
+          type: array
+          items:
+            $ref: '#/components/schemas/Authorization'
+        billingAccount:
+          description: 'A reference to a billing account to provide quote context
+            information '
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingAccountRef'
+        category:
+          description: "Used to categorize the quote from a business perspective that\
+            \ can be useful for the CRM system (e.g. \"enterprise\", \"residential\"\
+            , ...)"
+          type: string
+        description:
+          description: Description of the quote
+          type: string
+        expectedFulfillmentStartDate:
+          format: date-time
+          description: this is the date wished by the requester to have the requested
+            quote item delivered
+          type: string
+        'lastUpdateDate ':
+          format: date-time
+          description: this is the date of the last update on the quote
+          type: string
+        id:
+          description: Unique identifier - attributed by quoting system
+          type: string
+        instantSyncQuote:
+          description: 'An indicator which when the value is "true" means that requester
+            expects to get quoting result immediately in the response. If the indicator
+            is true then the response code of 200 indicates the operation is successful
+            otherwise a task is created with a response 201. '
+          type: boolean
+          example: false
+        note:
+          description: Free form text associated with the quote
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
+        productOfferingQualification:
+          description: A reference to a previously done product offering qualification
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductOfferingQualificationRef'
+        quoteItem:
+          description: An item of the quote - it is used to descirbe an operation
+            on a product to be quoted
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QuoteItem'
+          nullable: false
+        externalIdentifier:
+          description: A list of external identifiers given by the consumers and only
+            understandable by them (to facilitate his searches afterwards)
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalIdentifier'
+        relatedParty:
+          description: "A reference to a party playing a role in this quote (customer,\
+            \ seller, requester, etc.)"
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedParty'
+        requestedQuoteCompletionDate:
+          format: date-time
+          description: This is requested date - from quote requester - to get a complete
+            response for this quote
+          type: string
+        version:
+          description: Quote version - if the customer rejected the quote but  negotiations
+            still open a new version of the quote is managed
+          type: string
+        quoteLevel:
+          description: Quote level - define type of the quote
+          type: string
+          example: COTATION
+        requestedDebit:
+          format: double
+          type: number
+        quoteSpecification:
+          description: Quote specification
+          type: string
+      example:
+        category: OWF Quote
+        instantSyncQuote: false
+        '@type': Quote
+        requestedDeliveryDate: 2021-09-14T12:45:12.028Z
+        quoteSpecification: Acquisition
+        quoteItem:
+        - id: 1
+          action: add
+          productOffering:
+            id: GOC40140084001
+            href: http://cae-owf-train.caas-cnp-apps.com.intraorange/catalog/api/catalog/productOffering/GOC40140084001
+            name: FTTH Access
+          product:
+            place:
+            - '@type': GeographicAddressFullText
+              addressFullText: 9 grande rue 69600 oullins
+          quoteItemRelationship:
+          - id: 2
+            relationshipType: bundles
+        - id: 2
+          action: add
+          productOffering:
+            id: OC40140084001
+            href: http://cae-owf-train.caas-cnp-apps.com.intraorange/catalog/api/catalog/productOffering/OC40140084001
+            name: Acces active
+          product:
+            isBundle: true
+          quoteItemRelationship:
+          - id: 4
+            relationshipType: bundles
+          - id: 9
+            relationshipType: bundles
+        - id: 4
+          action: add
+          productOffering:
+            id: GO40140084001
+            href: http://cae-owf-train.caas-cnp-apps.com.intraorange/catalog/api/catalog/productOffering/GO40140084001
+            name: Caractéristiques principales
+          product:
+            isBundle: true
+          quoteItemRelationship:
+          - id: 7
+            relationshipType: bundles
+        - id: "9"
+          action: add
+          productOffering:
+            id: GO40140084002
+            href: ""
+            name: Point de livraison sur site client final
+          product:
+            isBundle: true
+          quoteItemRelationship:
+          - id: 8
+            relationshipType: bundles
+        - id: 7
+          action: add
+          productOffering:
+            id: O40140084001
+            href: http://cae-owf-train.caas-cnp-apps.com.intraorange/catalog/api/catalog/productOffering/O40140084001
+            name: Accès
+          product:
+            productCharacteristic:
+            - id: FONC40140084004
+              name: Débit d'accès Montant/Descendant
+              valueType: object
+              value:
+                '@type': CharacteristicChoiceValue
+                id: VF0000440140084004
+                name: 800M/1000M
+            - id: FONC40140084005
+              name: VLAN
+              valueType: object
+              value:
+                '@type': CharacteristicChoiceValue
+                id: VF0000240140084005
+                name: Sans TAG
+            - id: FONC40140084006
+              name: Profil voix
+              valueType: object
+              value:
+                '@type': CharacteristicChoiceValue
+                id: VF0000140140084006
+                name: 320K
+        - id: 8
+          action: add
+          productOffering:
+            id: O40140084008
+            href: ""
+            name: Raccordement
+          product:
+            productCharacteristic:
+            - id: FONC40140084003
+              name: Prise existante
+              valueType: object
+              value:
+                '@type': CharacteristicChoiceValue
+                id: VF0000240140084003
+                name: Non
+            - id: FONC40140084010
+              name: Point de livraison (DTIO/PTO ou bandeau optique)
+              valueType: object
+              value:
+                '@type': CharacteristicChoiceValue
+                id: VF0000140140084010
+                name: sur bandeau optique
+            - id: FONC40140084008
+              name: Multi-accès
+              valueType: object
+              value:
+                '@type': CharacteristicChoiceValue
+                id: VF0000240140084008
+                name: Non
+            - id: FONC40990080002
+              name: Intervention
+              valueType: object
+              value:
+                '@type': CharacteristicChoiceValue
+                id: VF0001240990080002
+                name: "Intervention sans pose ONT : Prise Optique présente"
+            - id: FONC40140084007
+              name: Type de rendez-vous
+              valueType: object
+              value:
+                '@type': CharacteristicChoiceValue
+                id: VF0000240140084007
+                name: Premium
+        relatedParty:
+        - name: Jean Pontus
+          role: buyer
+          id: SFR-bad44608-eee6-11eb-9a03-0242ac130003
+          '@referredType': organization
+    QuoteItem:
+      description: A quote items describe an action to be performed on a productOffering
+        or a product in order to get pricing elements and condition.
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        action:
+          description: "Action to be performed on this quote item (add, modify, delete,\
+            \ etc.)"
+          type: string
+        appointment:
+          description: A reference to appointment(s) associated with this quote item
+          type: array
+          items:
+            $ref: '#/components/schemas/AppointmentRef'
+        attachment:
+          description: A reference to attachment(s) associated with this quote item
+          type: array
+          items:
+            $ref: '#/components/schemas/AttachmentRefOrValue'
+        id:
+          description: "Identifier of the quote item (generally it is a sequence number\
+            \ 01, 02, 03, ...)"
+          type: string
+        note:
+          description: Free form text associated with the quote item
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
+        product:
+          allOf:
+          - $ref: '#/components/schemas/ProductRefOrValue'
+          - description: Product related to current entity.
+        productOffering:
+          allOf:
+          - $ref: '#/components/schemas/ProductOfferingRef'
+          - description: Orderable offer from the provider of the catalog.
+        productOfferingQualificationItem:
+          allOf:
+          - $ref: '#/components/schemas/ProductOfferingQualificationItemRef'
+          - description: A reference to a previously done POQ with item specified
+        quantity:
+          format: int32
+          description: Quantity asked for this quote item
+          type: integer
+        quoteItemAuthorization:
+          description: Authorization related to this quote item
+          type: array
+          items:
+            $ref: '#/components/schemas/Authorization'
+        quoteItemPrice:
+          description: Price for this quote item
+          type: array
+          items:
+            $ref: '#/components/schemas/QuotePrice'
+        quoteItemRelationship:
+          description: A relationship from item within a quote
+          type: array
+          items:
+            $ref: '#/components/schemas/QuoteItemRelationship'
+        relatedParty:
+          description: A reference to a party playing a role in this quote item
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedParty'
+        state:
+          description: "State of the quote item : described in the state machine diagram"
+          type: string
+        quoteItem:
+          description: A structure to embedded quote item within quote item
+          type: array
+          items:
+            $ref: '#/components/schemas/QuoteItem'
+    QuoteItemRelationship:
+      description: Used to describe relationship between quote item. These relationship
+        could have an impact on pricing and conditions
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        id:
+          description: ID of the related order item (must be in the same quote)
+          type: string
+        relationshipType:
+          description: "Relationship type as relies on, bundles, etc..."
+          type: string
+    QuotePrice:
+      description: Description of price and discount awarded
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        description:
+          description: Description of the quote/quote item price
+          type: string
+        name:
+          description: Name of the quote /quote item price
+          type: string
+        price:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          - description: "Provides all amounts (tax included, duty free, tax rate),\
+              \ used currency and percentage to apply for Price Alteration."
+        priceAlteration:
+          description: Colection of price modifications.
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceAlteration'
+        priceType:
+          description: indicate if the price is for recurrent or no-recurrent charge
+          type: string
+        productOfferingPrice:
+          allOf:
+          - $ref: '#/components/schemas/ProductOfferingPriceRef'
+          - description: "An amount, usually of money, that is asked for or allowed\
+              \ when a ProductOffering is bought, rented, or leased. The price is\
+              \ valid for a defined period of time."
+        recurringChargePeriod:
+          description: "Used for recurring charge to indicate period (month, week,\
+            \ etc..)"
+          type: string
+        unitOfMeasure:
+          description: "Unit of Measure if price depending on it (Gb, SMS volume,\
+            \ etc..)"
+          type: string
+    QuoteStateType:
+      enum:
+      - REJECTED
+      - PENDING
+      - INPROGRESS
+      - CANCELLED
+      - APPROVED
+      - ACCEPTED
+      - ACKNOWLEDGE
+      type: string
+    QuoteUpdate:
+      description: "Quote can be used to negotiate com.obs.quote.service and product\
+        \ acquisition or modification between a customer and a com.obs.quote.service\
+        \ provider. Quote contain list of quote items, a reference to customer (partyRole),\
+        \ a list of productOffering and attached prices and conditions. Skipped properties:\
+        \ id,href,quoteDate"
+      required:
+      - quoteItem
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        agreement:
+          description: A reference to an agreement defining the context of the quote
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementRef'
+        authorization:
+          description: An authorization provided for the quote
+          type: array
+          items:
+            $ref: '#/components/schemas/Authorization'
+        billingAccount:
+          description: 'A reference to a billing account to provide quote context
+            information '
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingAccountRef'
+        category:
+          description: "Used to categorize the quote from a business perspective that\
+            \ can be useful for the CRM system (e.g. \"enterprise\", \"residential\"\
+            , ...)"
+          type: string
+        description:
+          description: Description of the quote
+          type: string
+        effectiveQuoteCompletionDate:
+          format: date-time
+          description: Date when the quote has been completed
+          type: string
+        expectedFulfillmentStartDate:
+          format: date-time
+          description: this is the OffsetDateTime wished by the requester to have
+            the requested quote item delivered
+          type: string
+        expectedQuoteCompletionDate:
+          format: date-time
+          description: This is expected OffsetDateTime - from quote supplier - to
+            be able to send back  a response for this quote
+          type: string
+        externalId:
+          description: ID given by the consumer and only understandable by him (to
+            facilitate his searches afterwards)
+          type: string
+        instantSyncQuote:
+          description: 'An indicator which when the value is "true" means that requester
+            expects to get quoting result immediately in the response. If the indicator
+            is true then the response code of 200 indicates the operation is successful
+            otherwise a task is created with a response 201. '
+          type: boolean
+        note:
+          description: Free form text associated with the quote
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
+        productOfferingQualification:
+          description: A reference to a previously done product offering qualification
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductOfferingQualificationRef'
+        quoteItem:
+          description: An item of the quote - it is used to descirbe an operation
+            on a product to be quoted
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/QuoteItem'
+          nullable: false
+        quoteTotalPrice:
+          description: Quote total price
+          type: array
+          items:
+            $ref: '#/components/schemas/QuotePrice'
+        relatedParty:
+          description: "A reference to a party playing a role in this quote (customer,\
+            \ seller, requester, etc.)"
+          type: array
+          items:
+            $ref: '#/components/schemas/RelatedParty'
+        requestedQuoteCompletionDate:
+          format: date-time
+          description: This is requested OffsetDateTime - from quote requester - to
+            get a complete response for this quote
+          type: string
+        state:
+          allOf:
+          - $ref: '#/components/schemas/QuoteStateType'
+          - description: "State of the quote : described in the state-machine diagram"
+        validFor:
+          allOf:
+          - $ref: '#/components/schemas/TimePeriod1'
+          - description: Quote validity period
+        version:
+          description: Quote version - if the customer rejected the quote but  negotiations
+            still open a new version of the quote is managed
+          type: string
+    RelatedGeographicLocation:
+      description: A RelatedGeographicLocation allows describing through coordinate(s)
+        a point
+      required:
+      - role
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Unique reference of the place
+          type: string
+        id:
+          description: Unique identifier of the place
+          type: string
+        name:
+          description: "A user-friendly name for the place, such as [Paris Store],\
+            \ [London Store], [Main Home]"
+          type: string
+        role:
+          description: Role attributed to related place
+          type: string
+          nullable: false
+        geoCodeX:
+          description: Value of latitude of geo coordinate point
+          type: string
+        geoCodeY:
+          description: Value of longitude of geo coordinate point
+          type: string
+        geoCoordType:
+          description: Type of coordinate point
+          type: string
+    RelatedParty:
+      description: Related Entity reference. A related party defines party or party
+        role linked to a specific entity.
+      required:
+      - '@referredType'
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+          nullable: false
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+        role:
+          description: Role played by the related party
+          type: string
+    RelatedPlaceRefOrValue:
+      description: "Related Entity reference. A related place defines a place described\
+        \ by reference or by value linked to a specific entity. The polymorphic attributes\
+        \ @type, @schemaLocation & @referredType are related to the place entity and\
+        \ not the RelatedPlaceRefOrValue class itself"
+      required:
+      - role
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Unique reference of the place
+          type: string
+        id:
+          description: Unique identifier of the place
+          type: string
+        name:
+          description: "A user-friendly name for the place, such as [Paris Store],\
+            \ [London Store], [Main Home]"
+          type: string
+        role:
+          description: Role attributed to related place
+          type: string
+          nullable: false
+    RelatedProductOrderItem:
+      description: RelatedProductOrderItem (ProductOrder item) .The product order
+        item which triggered product creation/change/termination.
+      required:
+      - orderItemId
+      - productOrderId
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        orderItemAction:
+          description: Action of the order item for this product
+          type: string
+        orderItemId:
+          description: Identifier of the order item where the product was managed
+          type: string
+          nullable: false
+        productOrderHref:
+          description: Reference of the related entity.
+          type: string
+        productOrderId:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        role:
+          description: role of the product order item for this product
+          type: string
+    ResourceRef:
+      description: Reference to a resource by name and value
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the resource
+          type: string
+        value:
+          description: "The resource value that can be used to identify a resource\
+            \ with a public key (e.g.: a tel nr, an msisdn)"
+          type: string
+    ServiceRef:
+      description: "Service reference, for when Service is used by other entities"
+      required:
+      - id
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@referredType':
+          description: The actual type of the target instance when needed for disambiguation.
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        href:
+          description: Reference of the related entity.
+          type: string
+        id:
+          description: Unique identifier of a related entity.
+          type: string
+          nullable: false
+        name:
+          description: Name of the related entity.
+          type: string
+    TargetProductSchema:
+      description: The reference object to the schema and type of target product which
+        is described by product specification
+      required:
+      - '@schemaLocation'
+      - '@type'
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: This field provides a link to the schema describing the target
+            product
+          type: string
+          nullable: false
+        '@type':
+          description: Class type of the target product
+          type: string
+          nullable: false
+    TimePeriod:
+      description: "A period of time, either as a deadline (endDateTime only) a startDateTime\
+        \ only, or both."
+      type: object
+      properties:
+        endDateTime:
+          format: date
+          description: "End of the time period, using IETC-RFC-3339 format."
+          type: string
+        startDateTime:
+          format: date
+          description: "Start of the time period, using IETC-RFC-3339 format."
+          type: string
+    TimePeriod1:
+      description: "A period of time, either as a deadline (endDateTime only) a startDateTime\
+        \ only, or both"
+      type: object
+      properties:
+        endDateTime:
+          format: date-time
+          description: "End of the time period, using IETC-RFC-3339 format"
+          type: string
+        startDateTime:
+          format: date-time
+          description: "Start of the time period, using IETC-RFC-3339 format. If you\
+            \ define a start, you must also define an end"
+          type: string
+    ApiStatus:
+      description: API Status
+      required:
+      - name
+      - status
+      - version
+      type: object
+      properties:
+        components:
+          description: Components the API requires to be fully functional
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiComponentStatus'
+        name:
+          description: API internal name
+          type: string
+        version:
+          description: API version (major dot minor dot patch numbers)
+          type: string
+        status:
+          $ref: '#/components/schemas/ApiCheckStatus'
+    ApiCheckStatus:
+      description: Status
+      enum:
+      - ok
+      - ko
+      type: string
+    ApiComponentStatus:
+      description: Component status
+      required:
+      - name
+      - status
+      - version
+      type: object
+      properties:
+        name:
+          description: API internal name
+          type: string
+        version:
+          description: Component version  (major dot minor dot patch numbers
+          type: string
+        status:
+          $ref: '#/components/schemas/ApiCheckStatus'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

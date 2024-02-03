@@ -1,0 +1,1447 @@
+openapi: 3.0.3
+info:
+  title: API Party
+  description: "## TMF API Reference : TMF 632 - Party\n\n\
+    The party API provides standardized mechanism for party management such as creation,\
+    \ update, retrieval, deletion and notification of events. Party can be an individual\
+    \ or an organization that has any kind of relation with the enterprise. Party\
+    \ is created to record individual or organization information before the assignment\
+    \ of any role. For example, within the context of a split billing mechanism, Party\
+    \ API allows creation of the individual or organization that will play the role\
+    \ of 3 rd payer for a given offer and, then, allows consultation or update of\
+    \ his information.\n\n### Resources\n- Organization\n- Individual\n- Hub\n\nParty\
+    \ API performs the following operations :\n- Retrieve an organization or an individual\n\
+    - Retrieve a collection of organizations or individuals according to given criteria\n\
+    - Create a new organization or a new individual\n- Update an existing organization\
+    \ or an existing individual\n- Delete an existing organization or an existing\
+    \ individual\n- Notify events on organizatin or individual"
+  version: 1.0.0
+tags:
+- name: individual
+  description: Business operations on Party
+- name: organization
+  description: Business operations on Party
+paths:
+  /individual:
+    get:
+      tags:
+      - individual
+      summary: List or find Individual objects
+      description: This operation list or find Individual entities
+      operationId: listIndividual
+      parameters:
+      - name: fields
+        in: query
+        description: Comma-separated properties to be provided in response
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Requested number of resources to be provided in response
+        schema:
+          format: int32
+          type: integer
+      - name: offset
+        in: query
+        description: Requested index for start of resources to be provided in response
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          description: OK
+          headers:
+            X-Total-Count:
+              description: Total number of items matching criteria
+              style: simple
+              schema:
+                type: integer
+            X-Result-Count:
+              description: Actual number of items returned in the response body
+              style: simple
+              schema:
+                type: integer
+          content:
+            application/json;charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Individual'
+        "400":
+          description: Bad Request.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Entity not found.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Not Accepted
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "409":
+          description: Conflict
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - individual
+      summary: Creates a Individual
+      description: This operation creates a Individual entity.
+      operationId: createIndividual
+      requestBody:
+        description: The Individual to be created
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/Individual_Create'
+        required: true
+      responses:
+        "201":
+          description: Resource created
+          headers:
+            Location:
+              description: Uri of the newly created Individual
+              style: simple
+              schema:
+                type: string
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Individual'
+        "400":
+          description: Bad Request.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Not Accepted
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "409":
+          description: Conflict
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /individual/{id}:
+    get:
+      tags:
+      - individual
+      summary: Retrieves a Individual by ID
+      description: This operation retrieves a Individual entity. Attribute selection
+        is enabled for all first level attributes.
+      operationId: retrieveIndividual
+      parameters:
+      - name: id
+        in: path
+        description: Identifier of the Individual
+        required: true
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: Comma-separated properties to provide in response
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Individual'
+        "400":
+          description: Bad Request.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Entity not found.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Not Accepted
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "409":
+          description: Conflict
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - individual
+      summary: Deletes a Individual
+      description: This operation deletes a Individual entity.
+      operationId: deleteIndividual
+      parameters:
+      - name: id
+        in: path
+        description: Identifier of the Individual
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Resource deleted
+        "400":
+          description: Bad Request.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Entity not found.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Not Accepted
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "409":
+          description: Conflict
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    patch:
+      tags:
+      - individual
+      summary: Updates partially a Individual
+      description: This operation updates partially a Individual entity.
+      operationId: patchIndividual
+      parameters:
+      - name: id
+        in: path
+        description: Identifier of the Individual
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The patch to apply.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Individual_Update'
+            example:
+              title: DR
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/Individual_Update'
+            example:
+              title: DR
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Individual'
+        "400":
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Entity not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Not Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /organization:
+    get:
+      tags:
+      - organization
+      summary: List or find Organization objects
+      description: This operation list or find Organization entities
+      operationId: listOrganization
+      parameters:
+      - name: fields
+        in: query
+        description: Comma-separated properties to be provided in response
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Requested number of resources to be provided in response
+        schema:
+          format: int32
+          type: integer
+      - name: offset
+        in: query
+        description: Requested index for start of resources to be provided in response
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          description: OK
+          headers:
+            X-Total-Count:
+              description: Total number of items matching criteria
+              style: simple
+              schema:
+                type: integer
+            X-Result-Count:
+              description: Actual number of items returned in the response body
+              style: simple
+              schema:
+                type: integer
+          content:
+            application/json;charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+        "400":
+          description: Bad Request.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Entity not found.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Not Accepted
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "409":
+          description: Conflict
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - organization
+      summary: Creates a Organization
+      description: This operation creates a Organization entity.
+      operationId: createOrganization
+      requestBody:
+        description: The Organization to be created
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/OrganizationCreate'
+        required: true
+      responses:
+        "201":
+          description: Resource created
+          headers:
+            Location:
+              description: Uri of the newly created Organization
+              style: simple
+              schema:
+                type: string
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        "400":
+          description: Bad Request.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Not Accepted
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "409":
+          description: Conflict
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /organization/{id}:
+    get:
+      tags:
+      - organization
+      summary: Retrieves a Organization by ID
+      description: This operation retrieves a Organization entity. Attribute selection
+        is enabled for all first level attributes.
+      operationId: retrieveOrganization
+      parameters:
+      - name: id
+        in: path
+        description: Identifier of the Organization
+        required: true
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: Comma-separated properties to provide in response
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        "400":
+          description: Bad Request.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Entity not found.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Not Accepted
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "409":
+          description: Conflict
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - organization
+      summary: Deletes a Organization
+      description: This operation deletes a Organization entity.
+      operationId: deleteOrganization
+      parameters:
+      - name: id
+        in: path
+        description: Identifier of the Organization
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Resource deleted
+        "400":
+          description: Bad Request.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Entity not found.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Not Accepted
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "409":
+          description: Conflict
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    patch:
+      tags:
+      - organization
+      summary: Updates partially a Organization
+      description: This operation updates partially a Organization entity.
+      operationId: patchOrganization
+      parameters:
+      - name: id
+        in: path
+        description: Identifier of the Organization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The patch to apply.
+        content:
+          application/json-patch+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/JsonPatch'
+            example:
+            - op: replace
+              path: /name
+              value: org
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationUpdate'
+            example:
+              name: org
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/OrganizationUpdate'
+            example:
+              name: org
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        "400":
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Entity not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Not Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+  /status:
+    get:
+      tags:
+      - Commons
+      summary: Return the status of this API
+      description: A dedicated URI reserved to retrieve information about this API
+        status (for availability and monitoring purposes)
+      operationId: apiStatusGetStatus
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiStatus'
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiStatus'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "405":
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "406":
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "412":
+          description: Precondition Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "414":
+          description: Request-URI Too Long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "422":
+          description: Unprocessable entityBusiness error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Characteristic:
+      description: Describes a given characteristic of an object or entity through
+        a name/value pair.
+      required:
+      - name
+      - value
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        name:
+          description: Name of the characteristic
+          pattern: \S
+          type: string
+          nullable: false
+        valueType:
+          description: Data type of the value of the characteristic
+          type: string
+        value:
+          description: The value of the characteristic
+          type: object
+    ContactMedium:
+      description: Indicates the contact medium that could be used to contact the
+        party.
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        mediumType:
+          description: "Type of the contact medium, such as: email address, telephone\
+            \ number, postal address"
+          type: string
+        preferred:
+          description: "If true, indicates that is the preferred contact medium"
+          type: boolean
+        characteristic:
+          allOf:
+          - $ref: '#/components/schemas/MediumCharacteristic'
+          - description: Any additional characteristic(s) of this contact medium
+    Error:
+      description: "Used when an API throws an Error, typically with a HTTP error\
+        \ response-code (3xx, 4xx, 5xx)"
+      required:
+      - code
+      - reason
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class."
+          type: string
+        code:
+          description: "Application relevant detail, defined in the API or a common\
+            \ list."
+          type: string
+          nullable: false
+        message:
+          description: More details and corrective actions related to the error which
+            can be shown to a client user.
+          type: string
+        reason:
+          description: Explanation of the reason for the error which can be shown
+            to a client user.
+          type: string
+          nullable: false
+        referenceError:
+          format: uri
+          description: URI of documentation describing the error.
+          type: string
+        '@schemaLocation':
+          format: uri
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        status:
+          description: HTTP Error code extension
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name."
+          type: string
+    Individual:
+      description: "Individual represents a single human being (a man, woman or child).\
+        \ The individual can be a customer, an employee or any other person that the\
+        \ organization needs to store information about."
+      required:
+      - id
+      type: object
+      properties:
+        familyName:
+          description: Contains the non-chosen or inherited name. Also known as last
+            name in the Western context
+          type: string
+        familyNamePrefix:
+          description: Family name prefix
+          type: string
+        fullName:
+          description: "Full name flatten (first, middle, and last names)"
+          type: string
+        gender:
+          description: Gender
+          enum:
+          - MALE
+          - FEMALE
+          - OTHER
+          - UNKNOWN
+          type: string
+        givenName:
+          description: First name of the individual
+          type: string
+        legalName:
+          description: Legal name or birth name (name one has for official proposes)
+          type: string
+        middleName:
+          description: Middles name or initial
+          type: string
+        title:
+          description: "Useful for titles (aristocratic, social,...) Pr, Dr, Sir,\
+            \ ..."
+          type: string
+          example: Dr
+        contactMedium:
+          description: Indicates the contact medium that could be used to contact
+            the party
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactMedium'
+        partyCharacteristic:
+          description: Any additional characteristic(s) of this individual
+          type: array
+          items:
+            $ref: '#/components/schemas/Characteristic'
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        id:
+          description: Unique identifier of the individual
+          pattern: \S
+          type: string
+          readOnly: true
+          nullable: false
+        href:
+          description: Hyperlink to access the individual
+          type: string
+          readOnly: true
+    Individual_Create:
+      description: |-
+        Individual represents a single human being (a man, woman or child). The individual can be a customer, an employee or any other person that the organization needs to store information about.
+        Skipped properties: id,href
+      type: object
+      properties:
+        familyName:
+          description: Contains the non-chosen or inherited name. Also known as last
+            name in the Western context
+          pattern: \S
+          type: string
+          nullable: false
+        familyNamePrefix:
+          description: Family name prefix
+          type: string
+        fullName:
+          description: "Full name flatten (first, middle, and last names)"
+          type: string
+        gender:
+          description: Gender
+          enum:
+          - MALE
+          - FEMALE
+          - OTHER
+          - UNKNOWN
+          type: string
+        givenName:
+          description: First name of the individual
+          pattern: \S
+          type: string
+          nullable: false
+        legalName:
+          description: Legal name or birth name (name one has for official proposes)
+          type: string
+        middleName:
+          description: Middles name or initial
+          type: string
+        title:
+          description: "Useful for titles (aristocratic, social,...) Pr, Dr, Sir,\
+            \ ..."
+          type: string
+          example: Dr
+        contactMedium:
+          description: Indicates the contact medium that could be used to contact
+            the party
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactMedium'
+        partyCharacteristic:
+          description: Any additional characteristic(s) of this individual
+          type: array
+          items:
+            $ref: '#/components/schemas/Characteristic'
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+    Individual_Update:
+      description: |-
+        Individual represents a single human being (a man, woman or child). The individual can be a customer, an employee or any other person that the organization needs to store information about.
+        Skipped properties: id,href
+      type: object
+      properties:
+        familyName:
+          description: Contains the non-chosen or inherited name. Also known as last
+            name in the Western context
+          type: string
+        familyNamePrefix:
+          description: Family name prefix
+          type: string
+        fullName:
+          description: "Full name flatten (first, middle, and last names)"
+          type: string
+        gender:
+          description: Gender
+          enum:
+          - MALE
+          - FEMALE
+          - OTHER
+          - UNKNOWN
+          type: string
+        givenName:
+          description: First name of the individual
+          type: string
+        legalName:
+          description: Legal name or birth name (name one has for official proposes)
+          type: string
+        middleName:
+          description: Middles name or initial
+          type: string
+        title:
+          description: "Useful for titles (aristocratic, social,...) Pr, Dr, Sir,\
+            \ ..."
+          type: string
+          example: Dr
+        contactMedium:
+          description: Indicates the contact medium that could be used to contact
+            the party
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactMedium'
+        partyCharacteristic:
+          description: Any additional characteristic(s) of this individual
+          type: array
+          items:
+            $ref: '#/components/schemas/Characteristic'
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+    JsonPatch:
+      type: object
+      properties:
+        op:
+          type: string
+        path:
+          type: string
+        value:
+          type: object
+    MediumCharacteristic:
+      description: Describes the contact medium characteristics that could be used
+        to contact a party (an individual or an organization)
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        city:
+          description: The city
+          type: string
+        contactType:
+          description: "The type of contact, for example: phone number such as mobile,\
+            \ fixed home, fixed office. postal address such as shipping instalation…"
+          type: string
+        country:
+          description: The country
+          type: string
+        emailAddress:
+          description: Full email address in standard format
+          type: string
+        faxNumber:
+          description: The fax number of the contact
+          type: string
+        phoneNumber:
+          description: The primary phone number of the contact
+          type: string
+        postCode:
+          description: Postcode
+          type: string
+        socialNetworkId:
+          description: Identifier as a member of a social network
+          type: string
+        stateOrProvince:
+          description: State or province
+          type: string
+        street1:
+          description: Describes the street
+          type: string
+        street2:
+          description: Complementary street description
+          type: string
+    Organization:
+      description: "Organization represents a group of people identified by shared\
+        \ interests or purpose. Examples include business, department and enterprise.\
+        \ Because of the complex nature of many businesses, both organizations and\
+        \ organization units are represented by the same data."
+      required:
+      - id
+      type: object
+      properties:
+        isHeadOffice:
+          description: "If value is true, the organization is the head office"
+          type: boolean
+        isLegalEntity:
+          description: "If value is true, the organization is a legal entity known\
+            \ by a national referential."
+          type: boolean
+        name:
+          description: Organization name (department name for example)
+          type: string
+        nameType:
+          description: "Type of the name : Co, Inc, Ltd,…"
+          type: string
+        organizationType:
+          description: "Type of Organization (company, department...)"
+          enum:
+          - COMPANY
+          - DEPARTMENT
+          - UNKNOWN
+          type: string
+        tradingName:
+          description: Name that the organization (unit) trades under
+          type: string
+        contactMedium:
+          description: Indicates the contact medium that could be used to contact
+            the party
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactMedium'
+        organizationIdentification:
+          description: Any identification information of this organization
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganizationIdentification'
+        partyCharacteristic:
+          description: Any additional characteristic(s) of this organization
+          type: array
+          items:
+            $ref: '#/components/schemas/Characteristic'
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        id:
+          description: Unique identifier of the organization
+          pattern: \S
+          type: string
+          readOnly: true
+          nullable: false
+        href:
+          description: Hyperlink to access the organization.
+          type: string
+          readOnly: true
+    OrganizationCreate:
+      description: |-
+        Organization represents a group of people identified by shared interests or purpose. Examples include business, department and enterprise. Because of the complex nature of many businesses, both organizations and organization units are represented by the same data.
+        Skipped properties: id,href
+      type: object
+      properties:
+        isHeadOffice:
+          description: "If value is true, the organization is the head office"
+          type: boolean
+        isLegalEntity:
+          description: "If value is true, the organization is a legal entity known\
+            \ by a national referential."
+          type: boolean
+        name:
+          description: Organization name (department name for example)
+          type: string
+        nameType:
+          description: "Type of the name : Co, Inc, Ltd,…"
+          type: string
+        organizationType:
+          description: "Type of Organization (company, department...)"
+          enum:
+          - COMPANY
+          - DEPARTMENT
+          - UNKNOWN
+          type: string
+        tradingName:
+          description: Name that the organization (unit) trades under
+          pattern: \S
+          type: string
+          nullable: false
+        contactMedium:
+          description: Indicates the contact medium that could be used to contact
+            the party
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactMedium'
+        organizationIdentification:
+          description: Any identification information of this organization
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganizationIdentification'
+        partyCharacteristic:
+          description: Any additional characteristic(s) of this organization
+          type: array
+          items:
+            $ref: '#/components/schemas/Characteristic'
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+    OrganizationIdentification:
+      description: Represents our registration of information used as proof of identity
+        by an organization
+      type: object
+      properties:
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+        identificationId:
+          description: Identifier
+          type: string
+        identificationType:
+          description: Type of identification information used to identify the company
+            in a country or internationally
+          enum:
+          - RCE
+          - SIREN
+          - CODE_ARCEP_RIP
+          - TRIGRAM_RIP
+          type: string
+    OrganizationUpdate:
+      description: |-
+        Organization represents a group of people identified by shared interests or purpose. Examples include business, department and enterprise. Because of the complex nature of many businesses, both organizations and organization units are represented by the same data.
+        Skipped properties: id,href
+      type: object
+      properties:
+        isHeadOffice:
+          description: "If value is true, the organization is the head office"
+          type: boolean
+        isLegalEntity:
+          description: "If value is true, the organization is a legal entity known\
+            \ by a national referential."
+          type: boolean
+        name:
+          description: Organization name (department name for example)
+          type: string
+        nameType:
+          description: "Type of the name : Co, Inc, Ltd,…"
+          type: string
+        organizationType:
+          description: "Type of Organization (company, department...)"
+          enum:
+          - COMPANY
+          - DEPARTMENT
+          - UNKNOWN
+          type: string
+        tradingName:
+          description: Name that the organization (unit) trades under
+          type: string
+        contactMedium:
+          description: Indicates the contact medium that could be used to contact
+            the party
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactMedium'
+        organizationIdentification:
+          description: Any identification information of this organization
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganizationIdentification'
+        partyCharacteristic:
+          description: Any additional characteristic(s) of this organization
+          type: array
+          items:
+            $ref: '#/components/schemas/Characteristic'
+        '@baseType':
+          description: "When sub-classing, this defines the super-class"
+          type: string
+        '@schemaLocation':
+          description: A URI to a JSON-Schema file that defines additional attributes
+            and relationships
+          type: string
+        '@type':
+          description: "When sub-classing, this defines the sub-class entity name"
+          type: string
+    ApiStatus:
+      description: API Status
+      required:
+      - name
+      - status
+      - version
+      type: object
+      properties:
+        components:
+          description: Components the API requires to be fully functional
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiComponentStatus'
+        name:
+          description: API internal name
+          type: string
+        version:
+          description: API version (major dot minor dot patch numbers)
+          type: string
+        status:
+          $ref: '#/components/schemas/ApiCheckStatus'
+    ApiCheckStatus:
+      description: Status
+      enum:
+      - ok
+      - ko
+      type: string
+    ApiComponentStatus:
+      description: Component status
+      required:
+      - name
+      - status
+      - version
+      type: object
+      properties:
+        name:
+          description: API internal name
+          type: string
+        version:
+          description: Component version  (major dot minor dot patch numbers
+          type: string
+        status:
+          $ref: '#/components/schemas/ApiCheckStatus'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

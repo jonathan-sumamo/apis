@@ -1,0 +1,162 @@
+{
+    "id": "6d1dc54c-e75c-454f-b2e7-c48385bb6997",
+    "name": "TMF_ENV-V4.1.0-R20.5",
+    "values": [
+        {
+            "key": "Quote_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Partnership_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Event_API",
+            "value": "http://127.0.0.1:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Customer_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Process_Flow_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Account_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Shopping_Cart_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Product_Offering_Qualification_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Party_Role_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Sales_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Party_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Agreement_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Product_Inventory_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Product_Ordering_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Product_Catalog_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Appointment_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        },
+        {
+            "key": "Trouble_Ticket_API",
+            "value": "http://localhost:8080",
+            "description": {
+                "content": "",
+                "type": "text/plain"
+            },
+            "enabled": true
+        }
+    ],
+    "_postman_variable_scope": "environment",
+    "_postman_exported_at": "2019-07-31T11:27:26.549Z",
+    "_postman_exported_using": "Postman/6.5.3"
+}
